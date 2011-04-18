@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN"
+    "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+     <constant name="struts.custom.i18n.resources" value="globalMessages" />
+     <constant name="struts.i18n.encoding" value="UTF-8" />
+     <!-- 指定被struts2处理的请求后缀类型 -->  
+     <constant name="struts.action.extension" value="action"/>  
+     <!-- 当struts.xml改动后，是否重新加载。默认值为false(生产环境下使用)  -->  
+     <constant name="struts.configuration.xml.reload" value="true"/>
+     <!-- 为查找控制器包路径的关键字 -->
+     <constant name="struts.convention.package.locators" value="action" />
+      <!-- 设置浏览器是否缓存静态内容。默认值为true(生产环境下使用)  -->  
+     <constant name="struts.serve.static.browserCache" value="false" /> 
+     <constant name="struts.devMode" value="true" />
+     <constant name="struts.enable.DynamicMethodInvocation" value="false" />  
+     <!-- 将struts2委托Spring管理 -->
+     <constant name="struts.objectFactory" value="spring" />
+     <!-- 指定使用注解标注的控制器的默认包 -->
+     <constant name="struts.convention.default.parent.package" value="default-package" />
+     <constant name="struts.ui.theme" value="simple" />
+     
+     <package name="default" extends="struts-default">
+     
+     	<interceptors>
+			<!-- 定义登录验证拦截器 -->
+			<interceptor name="authority" class="interceptor.AuthorityInterceptor" />
+			 
+			   <!--定义属性驱动的拦截器-->
+       		<interceptor name=”params” class=”com.opensymphony.xwork2.interceptor.ParametersInterceptor” />
+       		  <!--定义模型驱动的拦截器-->
+			<interceptor name=”model-driven” class=”com.opensymphony.xwork2.interceptor.ModelDrivenInterceptor” /> 
+			 
+			 
+			 
+			 
+			<!-- 默认拦截器栈-->
+			<interceptor-stack name="authorityStack">
+				<interceptor-ref name="authority">
+					<param name="excludeMethods">register,login</param>
+				</interceptor-ref>
+				<interceptor-ref name="paramsPrepareParamsStack" />
+			</interceptor-stack>  
+		</interceptors>
+		<default-interceptor-ref name="authorityStack" />
+     
+     
+	     <global-results>
+	        <!-- 下面定义的结果对所有的Action都有效 -->
+	        <result name="exception">/error.jsp</result>
+	     </global-results>
+
+	     <global-exception-mappings>
+	        <!-- 指Action抛出Exception异常时，转入名为exception的结果。 -->
+	        <exception-mapping exception="java.lang.Exception" result="exception"/>
+	     </global-exception-mappings>
+	    
+     </package>
+        
+</struts>
