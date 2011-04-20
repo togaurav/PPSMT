@@ -36,17 +36,17 @@
     <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
         <property name="lobHandler" ref="lobHandler"/>
         <property name="dataSource" ref="dataSource"/>
-        <property name="packagesToScan" value="entity"/>  
+        <property name="packagesToScan" value="com.ppstream.mt.entity"/>                        <!-- 此处hibernate实体包  -->
         <property name="hibernateProperties">
-        <!-- 方言：MySQL5Dialect -->
             <value>
 		        hibernate.dialect = ${hibernate.dialect}
 		        hibernate.show_sql=false
 		        hibernate.format_sql=false
+		        hibernate.connection.autocommit=false
 		        hibernate.cache.use_second_level_cache=false
        	        hibernate.cache.use_query_cache=false
-       	        hibernate.cache.provider_class=org.hibernate.cache.EhCacheProvider
-       	        hibernate.hbm2ddl.auto = update
+       	        <!--hibernate.cache.provider_class=org.hibernate.cache.EhCacheProvider
+       	        hibernate.hbm2ddl.auto = update-->
             </value>
         </property>
        	<property name="eventListeners">  

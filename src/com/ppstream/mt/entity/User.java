@@ -1,38 +1,308 @@
 package com.ppstream.mt.entity;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;  
-
 @Entity
-@Table(name = "camuser")
-@XStreamAlias("camuser")  
-public class User extends BaseEntity implements Serializable{
+@Table(name = "USERS")
+public class User implements Serializable{
 	
-	@Column(nullable = false, length = 12)
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(name = "user_id",unique = true, nullable = false)
+	private Integer id;
+	
+	@Column(name = "username",nullable = false, length = 100)
 	private String userName;
 	
-	@Column(nullable = false)
+	@Column(name = "pswd",nullable = false, length = 50)
 	private String password;
     
-	@Column(nullable = false, length = 50)
-	private String emailAddress;
+	@Column(name = "email",nullable = true, length = 200)
+	private String email;
+
+	@Column(name = "reg_time",nullable = true)
+	private Integer regTime;
+	
+	@Column(name = "reg_ip",nullable = true, length = 20)
+	private String regIp;
+	
+	@Column(name = "last_visit",nullable = true)
+	private Integer lastVisit;
+	
+	@Column(name = "last_ip",nullable = true, length = 20)
+	private String lastIp;
+	
+	@Column(name = "is_company",nullable = false)
+	private Integer isCompany;
+	
+	@Column(name = "role_id",nullable = true)
+	private Integer roleId;
+	
+	@Column(name = "group_leader",nullable = true)
+	private Integer groupLeader;
+	
+	@Column(name = "group_id",nullable = true)
+	private Integer groupId;
+	
+	@Column(name = "nick_name",nullable = true, length = 100)
+	private String nickName;
+	
+	@Column(name = "sub_phone",nullable = true, length = 100)
+	private String subPhone;
+	
+	@Column(name = "status",nullable = true)
+	private Integer status;
+	
+	@Column(name = "token",nullable = true, length = 32)
+	private String token;
+	
+	@Column(name = "ikey_account",nullable = true, length = 32)
+	private String iKeyAccount;
+	
+	@Column(name = "is_default",nullable = true)
+	private Integer isDefault;
+
+	/**
+	 * name表示中间表的列,referencedColumnName表示实体类的关联列,默认是主键
+                  保存  PERSIST 、删除  REMOVE 、修改  MERGE 、刷新  REFRESH、全部 ALL
+       EAGER 即时加载,默认是LAZY
+	 */
+	@ManyToMany(
+        targetEntity=Role.class,
+        fetch=FetchType.EAGER,
+        cascade={CascadeType.PERSIST, CascadeType.MERGE}
+    )
+	@JoinTable(
+		name="users_has_roles",
+		joinColumns=@JoinColumn(name="user_id"), 
+		inverseJoinColumns=@JoinColumn(name="role_id") 
+	)
+	private Set<Role> roles;
+	
+	
+	@ManyToMany(
+        cascade = {CascadeType.PERSIST, CascadeType.MERGE},
+        fetch=FetchType.EAGER,
+        mappedBy = "users",
+        targetEntity = Privilege.class
+    )
+//    @OrderColumn(name="")
+	private Set<Privilege> privileges;
+
+	
+	public Set<Privilege> getPrivileges() {
+		return privileges;
+	}
 
 
-//	@OneToMany(fetch=FetchType.LAZY,mappedBy="camUser")
-//	private List<VideoInfoBean> videos;
+	public void setPrivileges(Set<Privilege> privileges) {
+		this.privileges = privileges;
+	}
 
 
-	@Override
-	public String toString(){
-		return "SubTagList [userId=" + super.getId() + ", userName=" + userName + ", emailAddress=" + emailAddress + "]";
+	public Integer getId() {
+		return id;
+	}
+
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+
+	public String getUserName() {
+		return userName;
+	}
+
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+
+	public String getPassword() {
+		return password;
+	}
+
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+
+	public String getEmail() {
+		return email;
+	}
+
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+
+	public Integer getRegTime() {
+		return regTime;
+	}
+
+
+	public void setRegTime(Integer regTime) {
+		this.regTime = regTime;
+	}
+
+
+	public String getRegIp() {
+		return regIp;
+	}
+
+
+	public void setRegIp(String regIp) {
+		this.regIp = regIp;
+	}
+
+
+	public Integer getLastVisit() {
+		return lastVisit;
+	}
+
+
+	public void setLastVisit(Integer lastVisit) {
+		this.lastVisit = lastVisit;
+	}
+
+
+	public String getLastIp() {
+		return lastIp;
+	}
+
+
+	public void setLastIp(String lastIp) {
+		this.lastIp = lastIp;
+	}
+
+
+	public Integer getIsCompany() {
+		return isCompany;
+	}
+
+
+	public void setIsCompany(Integer isCompany) {
+		this.isCompany = isCompany;
+	}
+
+
+	public Integer getRoleId() {
+		return roleId;
+	}
+
+
+	public void setRoleId(Integer roleId) {
+		this.roleId = roleId;
+	}
+
+
+	public Integer getGroupLeader() {
+		return groupLeader;
+	}
+
+
+	public void setGroupLeader(Integer groupLeader) {
+		this.groupLeader = groupLeader;
+	}
+
+
+	public Integer getGroupId() {
+		return groupId;
+	}
+
+
+	public void setGroupId(Integer groupId) {
+		this.groupId = groupId;
+	}
+
+
+	public String getNickName() {
+		return nickName;
+	}
+
+
+	public void setNickName(String nickName) {
+		this.nickName = nickName;
+	}
+
+
+	public String getSubPhone() {
+		return subPhone;
+	}
+
+
+	public void setSubPhone(String subPhone) {
+		this.subPhone = subPhone;
+	}
+
+
+	public Integer getStatus() {
+		return status;
+	}
+
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+
+
+	public String getToken() {
+		return token;
+	}
+
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
+
+	public String getiKeyAccount() {
+		return iKeyAccount;
+	}
+
+
+	public void setiKeyAccount(String iKeyAccount) {
+		this.iKeyAccount = iKeyAccount;
+	}
+
+
+	public Integer getIsDefault() {
+		return isDefault;
+	}
+
+
+	public void setIsDefault(Integer isDefault) {
+		this.isDefault = isDefault;
+	}
+
+
+	public Set<Role> getRoles() {
+		return roles;
+	}
+
+
+
+	public void setRoles(Set<Role> roles) {
+		this.roles = roles;
 	}
 	
 }

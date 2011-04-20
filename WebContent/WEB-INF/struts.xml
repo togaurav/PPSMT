@@ -24,21 +24,17 @@
      <package name="default" extends="struts-default">
      
      	<interceptors>
-			<!-- 定义登录验证拦截器 -->
-			<interceptor name="authority" class="interceptor.AuthorityInterceptor" />
-			 
-			   <!--定义属性驱动的拦截器-->
-       		<interceptor name=”params” class=”com.opensymphony.xwork2.interceptor.ParametersInterceptor” />
-       		  <!--定义模型驱动的拦截器-->
-			<interceptor name=”model-driven” class=”com.opensymphony.xwork2.interceptor.ModelDrivenInterceptor” /> 
-			 
-			 
-			 
-			 
+			<interceptor name="authority" class="com.ppstream.mt.interceptor.AuthorityInterceptor" >
+				<param name="name">登录验证拦截器</param>  
+			</interceptor>
+		    <!--定义属性驱动的拦截器
+       		<interceptor name="attribute" class="com.opensymphony.xwork2.interceptor.ParametersInterceptor" />-->
+       		<!--定义模型驱动的拦截器-->
+			<interceptor name="model-driven" class="com.opensymphony.xwork2.interceptor.ModelDrivenInterceptor" />
 			<!-- 默认拦截器栈-->
 			<interceptor-stack name="authorityStack">
 				<interceptor-ref name="authority">
-					<param name="excludeMethods">register,login</param>
+					<param name="excludeMethods">login</param>
 				</interceptor-ref>
 				<interceptor-ref name="paramsPrepareParamsStack" />
 			</interceptor-stack>  

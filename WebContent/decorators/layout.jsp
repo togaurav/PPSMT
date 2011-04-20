@@ -10,7 +10,14 @@
 <meta http-equiv="keywords" content="">
 <meta http-equiv="description" content="">
 <link rel="shortcut icon" href="" />
+
 <script src="http://code.jquery.com/jquery-1.4.4.min.js"></script>
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.8/jquery.validate.min.js"></script>
+
+<link rel="stylesheet" href="http://jquery.bassistance.de/treeview/demo/screen.css" type="text/css" />
+<link rel="stylesheet" href="http://jquery.bassistance.de/treeview/jquery.treeview.css" type="text/css" />
+<script type="text/javascript" src="http://jquery.bassistance.de/treeview/jquery.treeview.js"></script>
+
 <title><decorator:title default="Layout"/></title>
 <!-- 从被装饰页面获取head标签内容 -->
 <decorator:head/>
