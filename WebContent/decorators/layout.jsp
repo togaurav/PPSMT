@@ -17,13 +17,28 @@
 <link rel="stylesheet" href="http://jquery.bassistance.de/treeview/demo/screen.css" type="text/css" />
 <link rel="stylesheet" href="http://jquery.bassistance.de/treeview/jquery.treeview.css" type="text/css" />
 <script type="text/javascript" src="http://jquery.bassistance.de/treeview/jquery.treeview.js"></script>
+<style type="text/css">
+#header ,#centers ,#footer{ width:100%; margin:0 auto; clear:both;font-size:18px; line-height:68px; font-weight:bold;}
+#header{ height:68px; border:1px solid #CCCCCC; }
+#centers{ padding:8px 0;}
+#footer{ border-top:1px solid #CCCCCC; background:#F2F2F2;}
 
-<title><decorator:title default="Layout"/></title>
-<!-- 从被装饰页面获取head标签内容 -->
+#centers .c_left{ float:left; width:230px; border:1px solid #00CC66; background:#F7F7F7; margin-right:5px; }
+#centers .c_right{ float:left; width:500px;border:1px solid #00CC66; background:#F7F7F7}
+</style>
+<title><decorator:title default="PPS运维监控系统"/></title>
 <decorator:head/>
 </head>
 <body>
-Layout
+<div id="header">头部</div>
+<div id="centers">
+<div class="c_left">中左</div>
+<div class="c_right">
+中右
 <decorator:body />
+</div>
+<div class="clear">&nbsp;</div>
+</div>
+<div id="footer">底部</div> 
 </body>
 </html>

@@ -20,9 +20,9 @@
     <!-- Spring 通过自动扫描来查询和管理Bean -->
     <context:component-scan base-package="com.ppstream.mt"></context:component-scan>
     <context:property-placeholder location="/WEB-INF/jdbc.properties" />
-    <!-- 声明aspectj动态代理，启用注解驱动的aspectj配置。-->
+    <!-- 声明aspectj动态代理，启用注解驱动的aspectj配置。
     <aop:aspectj-autoproxy /> 
-    
+    -->
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource" lazy-init="true">
         <property name="driverClassName" value="${jdbc.driver}"/>
         <property name="url" value="${jdbc.url}"/>
