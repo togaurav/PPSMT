@@ -8,8 +8,8 @@
 <meta http-equiv="keywords" content="">
 <meta http-equiv="description" content="">
 <link rel="shortcut icon" href="" />
-<script src="http://code.jquery.com/jquery-1.4.4.min.js"></script>
-<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.8/jquery.validate.min.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.8/jquery.validate.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
 

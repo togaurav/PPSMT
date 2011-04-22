@@ -4,43 +4,67 @@
     "http://struts.apache.org/dtds/struts-2.1.dtd">
 <struts>
      <constant name="struts.custom.i18n.resources" value="globalMessages" />
+     <!-- 默认的视图主题 -->  
+     <constant name="struts.ui.theme" value="simple" />
      <constant name="struts.i18n.encoding" value="UTF-8" />
-     <!-- 指定被struts2处理的请求后缀类型 -->  
+     <!-- 指定被struts2处理的请求后缀类型    -->  
      <constant name="struts.action.extension" value="action"/>  
+     
+     <constant name="struts.devMode" value="true" />
+     <!--  配置Convention插件自动重加载映射  -->
+	 <constant name="struts.convention.classes.reload" value="true" /> 
      <!-- 当struts.xml改动后，是否重新加载。默认值为false(生产环境下使用)  -->  
      <constant name="struts.configuration.xml.reload" value="true"/>
-     <!-- 为查找控制器包路径的关键字 -->
-     <constant name="struts.convention.package.locators" value="action" />
       <!-- 设置浏览器是否缓存静态内容。默认值为true(生产环境下使用)  -->  
      <constant name="struts.serve.static.browserCache" value="false" /> 
-     <constant name="struts.devMode" value="true" />
-     <constant name="struts.enable.DynamicMethodInvocation" value="false" />  
-     <!-- 将struts2委托Spring管理 -->
-     <constant name="struts.objectFactory" value="spring" />
-     <!-- 指定使用注解标注的控制器的默认包 -->
-     <constant name="struts.convention.default.parent.package" value="default-package" />
-     <constant name="struts.ui.theme" value="simple" />
-     
-     <package name="default" extends="struts-default">
+     <!-- 开启动态方法调用 -->  
+     <constant name="struts.enable.DynamicMethodInvocation" value="true" />
+     <constant name="struts.convention.action.disableScanning" value="false" />
+     <!-- 
+     <constant name="struts.convention.default.parent.package" value="interceptor-package" />
+     <constant name="struts.convention.package.locators.basePackage" value="com.ppstream.mt.action" /> 
+ 	--> 
+ 
+<!--
+ "Unable to find interceptor class referenced by ref-name XYZ". 
+This means that the package where Convention is placing your actions, 
+does not extend the package where the interceptor is defined 
+-->
+
+     <package name="interceptor-package" extends="convention-default">  
      
      	<interceptors>
+		    <!--定义属性驱动的拦截器
+       		<interceptor name="attribute" class="com.opensymphony.xwork2.interceptor.ParametersInterceptor" />-->
+       		<!--定义模型驱动的拦截器
+			<interceptor name="model-driven" class="com.opensymphony.xwork2.interceptor.ModelDrivenInterceptor" /> -->
+			<!-- 自定义 -->
 			<interceptor name="authority" class="com.ppstream.mt.interceptor.AuthorityInterceptor" >
 				<param name="name">登录验证拦截器</param>  
 			</interceptor>
-		    <!--定义属性驱动的拦截器
-       		<interceptor name="attribute" class="com.opensymphony.xwork2.interceptor.ParametersInterceptor" />-->
-       		<!--定义模型驱动的拦截器-->
-			<interceptor name="model-driven" class="com.opensymphony.xwork2.interceptor.ModelDrivenInterceptor" />
-			<!-- 默认拦截器栈-->
+			<interceptor name="customException" class="com.ppstream.mt.interceptor.ErrorHandlingInterceptor" >
+				<param name="name">自定义异常处理拦截器</param>  
+			</interceptor>
+			<!-- 登录拦截器栈-->
 			<interceptor-stack name="authorityStack">
 				<interceptor-ref name="authority">
 					<param name="excludeMethods">login</param>
 				</interceptor-ref>
 				<interceptor-ref name="paramsPrepareParamsStack" />
+				<interceptor-ref name="defaultStack"/>
 			</interceptor-stack>  
+			<!-- 异常拦截器栈-->
+			<interceptor-stack name="customExceptionStack">
+				<!-- <interceptor-ref name="customException" />  -->
+				<interceptor-ref name="paramsPrepareParamsStack" />
+				<interceptor-ref name="defaultStack"/>
+			</interceptor-stack>  
+			
 		</interceptors>
-		<default-interceptor-ref name="authorityStack" />
-     
+		<!-- 
+		<default-interceptor-ref name="authorityStack" />   -->
+	     <!-- 指定默认action
+	     <default-action-ref   name = "index"   />     -->
      
 	     <global-results>
 	        <!-- 下面定义的结果对所有的Action都有效 -->

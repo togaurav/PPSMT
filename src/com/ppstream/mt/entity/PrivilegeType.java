@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 
 
@@ -35,6 +36,7 @@ public class PrivilegeType implements Serializable{
 	private Integer sortIndex;
 	
 	@OneToMany(fetch=FetchType.LAZY,mappedBy="privilegeType",cascade=CascadeType.ALL)
+	@OrderColumn(name="showNav")
 	private Set<PrivilegeCate> privilegeCates;
 
 	public Set<PrivilegeCate> getPrivilegeCates() {

@@ -20,13 +20,12 @@ public class UserService {
 	public User getUserByNameAndPwd(String username,String password){
 		String hql = "from User where userName = ? and password = ?";   
 		List<User> users = baseDao.findByHql(hql, username,Codec.hexMD5(password));
-		
-
-//		String sql = "select * from user where userName = ? and password = ?";
-//		List<User> users = (List<User>) baseDao.findBySql(sql, User.class, username,Codec.hexMD5(password));
-		
 		return (users.size() == 0) ? null : users.get(0);       // 如果size() > 1,throw new Exception();
 	}
 	
-	
+	public List<User> getUserList(){
+		String hql = "from User";
+		List<User> users = baseDao.findByHql(hql, null);
+		return users;
+	}
 }

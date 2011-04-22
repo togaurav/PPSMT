@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.NotFound;
@@ -38,7 +39,8 @@ public class PrivilegeCate implements Serializable{
 	@Column(name = "sort_index",nullable = true)
 	private Integer sortIndex;
 	
-	@OneToMany(fetch=FetchType.LAZY,mappedBy="privilegeCate",cascade=CascadeType.ALL)
+	@OneToMany(fetch=FetchType.EAGER,mappedBy="privilegeCate",cascade=CascadeType.ALL)
+	@OrderColumn(name="showNav")
 	private Set<Privilege> privileges;
 	
 	@ManyToOne

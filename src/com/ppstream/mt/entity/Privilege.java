@@ -34,7 +34,7 @@ public class Privilege implements Serializable{
 	private String action;
 
 	@Column(name = "show_nav",nullable = false)
-	private Integer showNav;
+	private Integer showNav;        // 是否显示在左侧的树中
 	
 	@Column(name = "sort_index",nullable = true)
 	private Integer sortIndex;

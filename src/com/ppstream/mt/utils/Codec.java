@@ -8,8 +8,6 @@ import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.Hex;
 
-import com.ppstream.mt.exception.UnexpectedException;
-
 /**
  * Codec utils
  */
@@ -31,7 +29,7 @@ public class Codec {
         try {
             return new String(Base64.encodeBase64(value.getBytes("utf-8")));
         } catch (UnsupportedEncodingException ex) {
-            throw new UnexpectedException(ex);
+            throw new RuntimeException(ex);
         }
     }
 
@@ -53,7 +51,7 @@ public class Codec {
         try {
             return Base64.decodeBase64(value.getBytes("utf-8"));
         } catch (UnsupportedEncodingException ex) {
-            throw new UnexpectedException(ex);
+            throw new RuntimeException(ex);
         }
     }
 
@@ -70,7 +68,7 @@ public class Codec {
             byte[] digest = messageDigest.digest();
             return byteToHexString(digest);
         } catch (Exception ex) {
-            throw new UnexpectedException(ex);
+            throw new RuntimeException(ex);
         }
     }
 
@@ -87,7 +85,7 @@ public class Codec {
             byte[] digest = md.digest();
             return byteToHexString(digest);
         } catch (Exception ex) {
-            throw new UnexpectedException(ex);
+            throw new RuntimeException(ex);
         }
     }
 
@@ -105,7 +103,7 @@ public class Codec {
         try {
             return Hex.decodeHex(hexString.toCharArray());
         } catch (DecoderException e) {
-            throw new UnexpectedException(e);
+            throw new RuntimeException(e);
         }
     }
 

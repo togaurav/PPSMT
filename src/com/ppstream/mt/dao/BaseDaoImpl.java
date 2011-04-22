@@ -1,5 +1,6 @@
 package com.ppstream.mt.dao;
 
+import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -21,6 +22,45 @@ public class BaseDaoImpl extends HibernateDaoSupport implements BaseDao{
 	@Autowired
 	public void fillUpSessionFactory(SessionFactory sf) {
 		super.setSessionFactory(sf);
+	}
+	
+	@Override
+	public void save(Object entity) {
+		getHibernateTemplate().save(entity);
+	}
+
+	@Override
+	public void update(Object entity) {
+		getHibernateTemplate().update(entity);
+	}
+
+	@Override
+	public void refresh(Object entity) {
+		getHibernateTemplate().refresh(entity);
+	}
+
+	@Override
+	public void delete(Object entity) {
+		getHibernateTemplate().delete(entity);
+	}
+	
+	@Override
+	public void saveOrUpdate(Object entity) {
+		getHibernateTemplate().saveOrUpdate(entity);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional(readOnly = true)
+	public <T> T load(Class<T> entity, Serializable id) {
+		return (T) getHibernateTemplate().load(entity, id);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional(readOnly = true)
+	public <T> T get(Class<T> entity, Serializable id) {
+		return (T) getHibernateTemplate().get(entity, id);
 	}
 	
 	

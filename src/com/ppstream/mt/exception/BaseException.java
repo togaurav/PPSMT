@@ -6,6 +6,14 @@ public abstract class BaseException extends RuntimeException {
 	
 	static AtomicLong atomicLong = new AtomicLong(System.currentTimeMillis());
     String id;
+    
+    private String messageCode;
+    public String getMessageCode() {
+        return messageCode;
+    }
+    public void setMessageCode(String messageCode) {
+        this.messageCode = messageCode;
+    }
 
     public BaseException() {
         super();
