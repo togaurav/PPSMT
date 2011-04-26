@@ -2,6 +2,7 @@ package com.ppstream.mt.exception;
 
 import java.util.concurrent.atomic.AtomicLong;
 
+// 所有业务异常的基类
 public abstract class BaseException extends RuntimeException {
 	
 	static AtomicLong atomicLong = new AtomicLong(System.currentTimeMillis());

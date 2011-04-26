@@ -12,7 +12,7 @@
 <h3>角色列表</h3>
 <div id="main">
 <div class="toolbar">
-<input value="添加" onclick="location.href=''" type="button">
+<input value="添加" onclick="location.href='${pageContext.request.contextPath}/authority/addRole.jsp'" type="button">
 </div>
 <table>
 <tr class="table_head">
@@ -25,15 +25,18 @@
 <td><s:property value="#role.id" /></td>
 <td><s:property value="#role.roleName" /></td>
 <td>
-<input value="修改" onclick="location.href=''" type="button">&nbsp;
-<input class="del_btn" value="删除" onclick="if(confirm('确认删除？'))location.href=''" type="button">&nbsp;
+<input value="修改" 
+  onclick="location.href='${pageContext.request.contextPath}/default/editRoleView.action?roleId=<s:property value="#role.id" />'" type="button">&nbsp;
+<input class="del_btn" value="删除" 
+	onclick="if(confirm('确认删除？'))location.href='${pageContext.request.contextPath}/default/deleteRole.action?roleId=<s:property value="#role.id" />'" type="button">&nbsp;
 <input value="设置角色权限" 
-	onclick="location.href='${pageContext.request.contextPath}/default/configRolePrivilege.action?roleId=<s:property value="#role.id" />'" type="button">
+	onclick="location.href='${pageContext.request.contextPath}/default/assignPrivilegeToRoleView.action?roleId=<s:property value="#role.id" />'" type="button">
 </td>
 </tr>
 </s:iterator>
 </table>
 </div>
 </div>
+
 </body>
 </html>

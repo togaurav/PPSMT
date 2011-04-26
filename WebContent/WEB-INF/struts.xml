@@ -20,62 +20,7 @@
      <!-- 开启动态方法调用 -->  
      <constant name="struts.enable.DynamicMethodInvocation" value="true" />
      <constant name="struts.convention.action.disableScanning" value="false" />
-     <!-- 
-     <constant name="struts.convention.default.parent.package" value="interceptor-package" />
-     <constant name="struts.convention.package.locators.basePackage" value="com.ppstream.mt.action" /> 
- 	--> 
- 
-<!--
- "Unable to find interceptor class referenced by ref-name XYZ". 
-This means that the package where Convention is placing your actions, 
-does not extend the package where the interceptor is defined 
--->
-
-     <package name="interceptor-package" extends="convention-default">  
      
-     	<interceptors>
-		    <!--定义属性驱动的拦截器
-       		<interceptor name="attribute" class="com.opensymphony.xwork2.interceptor.ParametersInterceptor" />-->
-       		<!--定义模型驱动的拦截器
-			<interceptor name="model-driven" class="com.opensymphony.xwork2.interceptor.ModelDrivenInterceptor" /> -->
-			<!-- 自定义 -->
-			<interceptor name="authority" class="com.ppstream.mt.interceptor.AuthorityInterceptor" >
-				<param name="name">登录验证拦截器</param>  
-			</interceptor>
-			<interceptor name="customException" class="com.ppstream.mt.interceptor.ErrorHandlingInterceptor" >
-				<param name="name">自定义异常处理拦截器</param>  
-			</interceptor>
-			<!-- 登录拦截器栈-->
-			<interceptor-stack name="authorityStack">
-				<interceptor-ref name="authority">
-					<param name="excludeMethods">login</param>
-				</interceptor-ref>
-				<interceptor-ref name="paramsPrepareParamsStack" />
-				<interceptor-ref name="defaultStack"/>
-			</interceptor-stack>  
-			<!-- 异常拦截器栈-->
-			<interceptor-stack name="customExceptionStack">
-				<!-- <interceptor-ref name="customException" />  -->
-				<interceptor-ref name="paramsPrepareParamsStack" />
-				<interceptor-ref name="defaultStack"/>
-			</interceptor-stack>  
-			
-		</interceptors>
-		<!-- 
-		<default-interceptor-ref name="authorityStack" />   -->
-	     <!-- 指定默认action
-	     <default-action-ref   name = "index"   />     -->
-     
-	     <global-results>
-	        <!-- 下面定义的结果对所有的Action都有效 -->
-	        <result name="exception">/error.jsp</result>
-	     </global-results>
-
-	     <global-exception-mappings>
-	        <!-- 指Action抛出Exception异常时，转入名为exception的结果。 -->
-	        <exception-mapping exception="java.lang.Exception" result="exception"/>
-	     </global-exception-mappings>
-	    
-     </package>
+     <constant name="struts.objectFactory.spring.autoWire.alwaysRespect" value="true" />   
         
 </struts>

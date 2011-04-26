@@ -29,25 +29,29 @@
 </tr>
 
 
-
+<s:iterator value="#request.users" id="user">
 <tr style="background-color: rgb(238, 238, 255);" class="data_rows">
-<td>696</td>
-<td>刘鹏</td>
-<td>刘鹏</td>
-<td>超级管理员</td>
-<td>开发二部</td>
-<td>否</td>
-<td></td>
-<td></td>
-<td>是</td>
+<td><s:property value="#user.id"></s:property></td>
+<td><s:property value="#user.userName"></s:property></td>
+<td><s:property value="#user.nickName"></s:property></td>
 <td>
-<input class="" value="修改" onclick="location.href='/index.php/user/edit/user_id/696'" type="button">
-&nbsp;<input class="" value="停用" onclick="if(confirm('确定停用？'))location.href='/index.php/user/del/user_id/696'" type="button">
-&nbsp;<input class="" value="设置权限" onclick="location.href='/index.php/role/set_privilege/user_id/696'" type="button">
-&nbsp;<input class="" value="设置业务" onclick="location.href='/index.php/role/set_business/user_id/696'" type="button">
+<s:iterator value="#user.roles" id="role">
+<s:property value="#role.roleName"></s:property>
+</s:iterator>
+</td>
+<td><s:property value="#user.group.groupName"></s:property></td>  
+<td><s:property value="#user.groupLeader"></s:property></td>  
+<td><s:property value="#user.eamil"></s:property></td>
+<td><s:property value="#user.subPhone"></s:property></td>
+<td><s:property value="#user.status"></s:property></td>  
+<td>
+<input class="" value="修改" onclick="location.href=''" type="button">
+&nbsp;<input class="" value="停用" onclick="if(confirm('确定停用？'))location.href=''" type="button">
+&nbsp;<input class="" value="设置权限" onclick="location.href=''" type="button">
+&nbsp;<input class="" value="设置业务" onclick="location.href=''" type="button">
 </td>
 </tr>
-
+</s:iterator>
 
 </table>
 </div>

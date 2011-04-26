@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.NotFound;
@@ -26,7 +27,8 @@ public class PrivilegeCate implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="SEQ_PRIVILEGE_CATES")
+	@SequenceGenerator(name="SEQ_PRIVILEGE_CATES",sequenceName="SEQ_PRIVILEGE_CATES")
 	@Column(name = "cate_id",unique = true, nullable = false)
 	private Integer id;
 	
@@ -43,7 +45,7 @@ public class PrivilegeCate implements Serializable{
 	@OrderColumn(name="showNav")
 	private Set<Privilege> privileges;
 	
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.EAGER)
 	@NotFound(action=NotFoundAction.IGNORE)  // one一方的数据不存在,即PrivilegeType一方
     @JoinColumn(name="type_id")
 	private PrivilegeType privilegeType;

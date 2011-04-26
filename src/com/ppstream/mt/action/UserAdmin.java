@@ -4,13 +4,28 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang.xwork.StringUtils;
-import org.apache.struts2.convention.annotation.Action;
-import org.apache.struts2.convention.annotation.Result;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.xwork.StringUtils;
+import org.apache.struts2.ServletActionContext;
+import org.apache.struts2.convention.annotation.Action;
+import org.apache.struts2.convention.annotation.ExceptionMapping;
+import org.apache.struts2.convention.annotation.ExceptionMappings;
+import org.apache.struts2.convention.annotation.InterceptorRef;
+import org.apache.struts2.convention.annotation.InterceptorRefs;
+import org.apache.struts2.convention.annotation.Namespace;
+import org.apache.struts2.convention.annotation.ParentPackage;
+import org.apache.struts2.convention.annotation.Result;
+import org.apache.struts2.convention.annotation.Results;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+import com.opensymphony.xwork2.ActionContext;
+import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
 import com.ppstream.mt.bean.GPrivilege;
 import com.ppstream.mt.entity.Privilege;
@@ -21,7 +36,7 @@ import com.ppstream.mt.entity.User;
 import com.ppstream.mt.formmodel.UserLogIn;
 import com.ppstream.mt.service.UserService;
 
-
+@Component("userAdmin") 
 public class UserAdmin extends BaseAction implements ModelDriven<UserLogIn> {
 
 	private static final long serialVersionUID = 1L;
@@ -31,8 +46,20 @@ public class UserAdmin extends BaseAction implements ModelDriven<UserLogIn> {
 	 */
 	private HashMap<String, HashMap<String, HashSet<GPrivilege>>> maps= new HashMap<String,HashMap<String,HashSet<GPrivilege>>>();
 	
-	@Autowired  
+	private Map<String, String> errorMap = new HashMap<String, String>();
+	
+	/**
+	 * @Autowired 默认按类型装配,@Resource默认按名称装配,在使用Spring AOP之后,使用@Autowired注入为null,改为@Resource
+	 */
 	private UserService userService;
+	
+	public UserService getUserService() {
+		return userService;
+	}
+	@Resource  
+	public void setUserService(UserService userService) {
+		this.userService = userService;
+	}
 
 	private UserLogIn userLogIn = new UserLogIn();
 	
@@ -41,26 +68,28 @@ public class UserAdmin extends BaseAction implements ModelDriven<UserLogIn> {
 		return userLogIn;
 	}
 
-//	@BeforeClass
-//	public static void authorityValidate() throws Exception {
-//		
-//	}
-	
-	
+	// 用户登录
 	@Action(value="login",
-//		interceptorRefs=@InterceptorRef("customException"),  // 异常处理拦截器
 		results={
 			@Result(name="success", location="/user/index.jsp" ) 
         }
 	)
     public String login() throws Exception { 
 		// 验证
-		
+		if(StringUtils.isEmpty(userLogIn.getUsername())){
+			errorMap.put("username", "Please enter a username");
+		}
+		if(StringUtils.isEmpty(userLogIn.getPassword())){
+			errorMap.put("username", "Please provide a password");
+		}
+		if(errorMap.keySet().size() > 0){
+			return LOGIN;
+		}
 		// 查询数据库	
 		User user = userService.getUserByNameAndPwd(userLogIn.getUsername(),userLogIn.getPassword());
 		if(user == null){
-			throw new Exception("测试异常");
-//			return "login";
+//			throw new Exception("无此用户 ~~~  异常");
+			return LOGIN;
 		}
 		Set<Role> roles = user.getRoles();
 		Iterator<Role> roleIterator = roles.iterator();
@@ -86,7 +115,7 @@ public class UserAdmin extends BaseAction implements ModelDriven<UserLogIn> {
 					typeName = pt.getTypeName();
 				}
 				
-				// 将拥有的权限放入一个集合中
+				// 将拥有的权限放入一个集合中  ---------------------- [改：方法抽出]
 				GPrivilege gp = new GPrivilege(privilegeName,privilegeAction,showNav);
 				if(maps.containsKey(typeName)){
 					HashMap<String, HashSet<GPrivilege>> cateMap = maps.get(typeName);
@@ -124,8 +153,8 @@ public class UserAdmin extends BaseAction implements ModelDriven<UserLogIn> {
 		return SUCCESS;  
 	}
 	
+	// 员工列表
 	@Action(value="userList",
-//			interceptorRefs=@InterceptorRef("customException"),  // 异常处理拦截器
 			results={
 				@Result(name="success", location="/authority/userList.jsp" ) 
 	        }
@@ -136,5 +165,11 @@ public class UserAdmin extends BaseAction implements ModelDriven<UserLogIn> {
 		return SUCCESS;
 	}
 	
-	
+	// 退出
+	@Action(value="logout")
+	public String logout() throws Exception{
+		session.clear();
+		System.out.println("isEmpty ? : " + session.isEmpty());
+		return LOGIN;
+	}
 }

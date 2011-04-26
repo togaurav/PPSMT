@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
@@ -23,7 +24,8 @@ public class Privilege implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="SEQ_PRIVILEGE")
+	@SequenceGenerator(name="SEQ_PRIVILEGE",sequenceName="SEQ_PRIVILEGE")
 	@Column(name = "privilege_id",unique = true, nullable = false)
 	private Integer id;
 	
@@ -39,35 +41,27 @@ public class Privilege implements Serializable{
 	@Column(name = "sort_index",nullable = true)
 	private Integer sortIndex;
 	
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="cate_id")
 	private PrivilegeCate privilegeCate;
 	
 	
-	
+	// 被控
 	@ManyToMany(
-        targetEntity=Role.class,
-//        fetch=FetchType.EAGER,
-        cascade={CascadeType.PERSIST, CascadeType.MERGE}
-    )
-	@JoinTable(
-		name="privilege_role_user",
-		joinColumns=@JoinColumn(name="privilege_id"), 
-		inverseJoinColumns=@JoinColumn(name="role_id") 
-	)
+	        cascade = {CascadeType.PERSIST, CascadeType.MERGE},  
+	        fetch=FetchType.LAZY,
+	        mappedBy = "privileges",
+	        targetEntity = Role.class
+	    )
 	private Set<Role> roles;
 	
-	
+	// 被控
 	@ManyToMany(
-        targetEntity=User.class,
-//        fetch=FetchType.EAGER,
-        cascade={CascadeType.PERSIST, CascadeType.MERGE}
+        cascade = {CascadeType.PERSIST, CascadeType.MERGE},
+        fetch=FetchType.LAZY,
+        mappedBy = "privileges",
+        targetEntity = User.class
     )
-	@JoinTable(
-		name="privilege_role_user",
-		joinColumns=@JoinColumn(name="privilege_id"), 
-		inverseJoinColumns=@JoinColumn(name="user_id") 
-	)
 	private Set<User> users;
 	
 	

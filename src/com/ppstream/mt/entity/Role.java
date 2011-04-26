@@ -10,7 +10,10 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
@@ -20,28 +23,33 @@ public class Role implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="SEQ_ROLES")
+	@SequenceGenerator(name="SEQ_ROLES",sequenceName="SEQ_ROLES")
 	@Column(name = "role_id",unique = true, nullable = false)
 	private Integer id;
 	
 	@Column(name = "role_name",nullable = false, length = 100)
 	private String roleName;
 	
+	// 被控
 	@ManyToMany(
         cascade = {CascadeType.PERSIST, CascadeType.MERGE},
-        fetch=FetchType.EAGER,
+        fetch=FetchType.LAZY,
         mappedBy = "roles",
         targetEntity = User.class
     )
 	private Set<User> users;
 	
-	
-	@ManyToMany(
-        cascade = {CascadeType.PERSIST, CascadeType.MERGE},
-        fetch=FetchType.EAGER,
-        mappedBy = "roles",
-        targetEntity = Privilege.class
+	// 主控
+    @ManyToMany(
+        targetEntity=Privilege.class,fetch=FetchType.EAGER,
+        cascade={CascadeType.PERSIST, CascadeType.MERGE}
     )
+	@JoinTable(
+		name="privilege_role_user",
+		joinColumns=@JoinColumn(name="role_id"), 
+		inverseJoinColumns=@JoinColumn(name="privilege_id") 
+	)
 	private Set<Privilege> privileges;
 	
 	

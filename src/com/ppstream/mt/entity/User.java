@@ -13,6 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
@@ -22,7 +24,8 @@ public class User implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="SEQ_USERS")
+	@SequenceGenerator(name="SEQ_USERS",sequenceName="SEQ_USERS")
 	@Column(name = "user_id",unique = true, nullable = false)
 	private Integer id;
 	
@@ -50,15 +53,30 @@ public class User implements Serializable{
 	@Column(name = "is_company",nullable = false)
 	private Integer isCompany;
 	
-	@Column(name = "role_id",nullable = true)
-	private Integer roleId;
+//	@Column(name = "role_id",nullable = true)
+//	private Integer roleId;
 	
 	@Column(name = "group_leader",nullable = true)
 	private Integer groupLeader;
 	
-	@Column(name = "group_id",nullable = true)
-	private Integer groupId;
+//	@Column(name = "group_id",nullable = true)
+//	private Integer groupId;
 	
+	@ManyToOne
+    @JoinColumn(name="group_id")
+	private Group group;
+	
+//	public Integer getGroupId() {
+//		return groupId;
+//	}
+//
+//
+//	public void setGroupId(Integer groupId) {
+//		this.groupId = groupId;
+//	}
+
+
+
 	@Column(name = "nick_name",nullable = true, length = 100)
 	private String nickName;
 	
@@ -82,6 +100,7 @@ public class User implements Serializable{
                   保存  PERSIST 、删除  REMOVE 、修改  MERGE 、刷新  REFRESH、全部 ALL
        EAGER 即时加载,默认是LAZY
 	 */
+	// 主控
 	@ManyToMany(
         targetEntity=Role.class,
         fetch=FetchType.EAGER,
@@ -95,16 +114,29 @@ public class User implements Serializable{
 	private Set<Role> roles;
 	
 	
+	// 主控
 	@ManyToMany(
-        cascade = {CascadeType.PERSIST, CascadeType.MERGE},
-        fetch=FetchType.EAGER,
-        mappedBy = "users",
-        targetEntity = Privilege.class
+        targetEntity=Privilege.class,fetch=FetchType.EAGER,
+        cascade={CascadeType.PERSIST, CascadeType.MERGE}
     )
-//    @OrderColumn(name="")
+	@JoinTable(
+		name="privilege_role_user",
+		joinColumns=@JoinColumn(name="user_id"), 
+		inverseJoinColumns=@JoinColumn(name="privilege_id") 
+	)
 	private Set<Privilege> privileges;
 
 	
+	public Group getGroup() {
+		return group;
+	}
+
+
+	public void setGroup(Group group) {
+		this.group = group;
+	}
+
+
 	public Set<Privilege> getPrivileges() {
 		return privileges;
 	}
@@ -205,16 +237,6 @@ public class User implements Serializable{
 	}
 
 
-	public Integer getRoleId() {
-		return roleId;
-	}
-
-
-	public void setRoleId(Integer roleId) {
-		this.roleId = roleId;
-	}
-
-
 	public Integer getGroupLeader() {
 		return groupLeader;
 	}
@@ -222,16 +244,6 @@ public class User implements Serializable{
 
 	public void setGroupLeader(Integer groupLeader) {
 		this.groupLeader = groupLeader;
-	}
-
-
-	public Integer getGroupId() {
-		return groupId;
-	}
-
-
-	public void setGroupId(Integer groupId) {
-		this.groupId = groupId;
 	}
 
 

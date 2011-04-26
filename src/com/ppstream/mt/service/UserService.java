@@ -10,7 +10,7 @@ import com.ppstream.mt.dao.BaseDao;
 import com.ppstream.mt.entity.User;
 import com.ppstream.mt.utils.Codec;
 
-@Service
+@Service("userService")
 @Transactional
 public class UserService {
 

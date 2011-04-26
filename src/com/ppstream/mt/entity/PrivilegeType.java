@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 
@@ -22,7 +23,8 @@ public class PrivilegeType implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="SEQ_PRIVILEGE_TYPES")
+	@SequenceGenerator(name="SEQ_PRIVILEGE_TYPES",sequenceName="SEQ_PRIVILEGE_TYPES")
 	@Column(name = "type_id",unique = true, nullable = false)
 	private Integer id;
 	
@@ -35,7 +37,7 @@ public class PrivilegeType implements Serializable{
 	@Column(name = "sort_index",nullable = true)
 	private Integer sortIndex;
 	
-	@OneToMany(fetch=FetchType.LAZY,mappedBy="privilegeType",cascade=CascadeType.ALL)
+	@OneToMany(fetch=FetchType.EAGER,mappedBy="privilegeType",cascade=CascadeType.ALL)
 	@OrderColumn(name="showNav")
 	private Set<PrivilegeCate> privilegeCates;
 

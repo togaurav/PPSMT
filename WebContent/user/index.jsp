@@ -1,9 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags"%>
+<%  
+String path = request.getContextPath();  
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";  
+%>  
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<base href="<%=basePath%>">  
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <script type="text/javascript"
@@ -40,7 +45,8 @@
 				<div id="admin-header-logo"><img src="${pageContext.request.contextPath}/images/logo.png"/></div>
 				<div id="admin-header-menu">
 				<div id="admin-header-userinfo"><s:property value="#session.roleName" />：<s:property value="#session.userName" />/<s:property value="#session.nickName" /></div>
-				<div id="admin-header-ip">IP：XXXX <a href="" target="_parent">[ 退出 ]</a></div>
+				<div id="admin-header-ip">IP：XXXX 
+				<a href="${pageContext.request.contextPath}/default/logout.action" target="_parent">[ 退出 ]</a></div>
 				<div id="admin-header-refer">
 					<a href="javascript:void(0)" 
 						onclick="window.frames['main-iframe'].location.href += (window.frames['main-iframe'].location.href.indexOf('?') == -1 ? '?' : '&').concat(Math.random());">刷新内页</a> 

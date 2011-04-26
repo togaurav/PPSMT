@@ -18,19 +18,10 @@ import com.ppstream.mt.bean.GPrivilege;
 
 /**
  * 登录以及权限判断拦截器
- * @author laupeng
+ * @author liupeng
  */
-@ParentPackage(value="convention-default")
 public class AuthorityInterceptor extends MethodFilterInterceptor {
 	
-	// 简单拦截器的名字  
-    private String name;  
-  
-    // 为该简单拦截器设置名字的setter方法  
-    public void setName(String name) {  
-        this.name = name;  
-    }  
-
     public String doIntercept(ActionInvocation invocation) throws Exception {
     	
     	// 将一个拦截结果的监听器注册给该拦截器  
@@ -41,14 +32,13 @@ public class AuthorityInterceptor extends MethodFilterInterceptor {
         String userName = (String) session.get("userName");
         System.out.println("execute方法执行之前的拦截...");  
         if (userName != null) {
-            System.out.println("execute方法执行之后的拦截...");
             /*
              * 判断权限
              */
             HashMap<String, HashMap<String, HashSet<GPrivilege>>> maps = (HashMap<String, HashMap<String, HashSet<GPrivilege>>>)session.get("maps");
 
             // 取得被拦截的Action实例  
-//               Object action = invocation.getAction();
+            Object action = invocation.getAction();
             
             
             

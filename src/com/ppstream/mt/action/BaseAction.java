@@ -8,28 +8,24 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.ExceptionMapping;
 import org.apache.struts2.convention.annotation.ExceptionMappings;
-import org.apache.struts2.convention.annotation.InterceptorRef;
-import org.apache.struts2.convention.annotation.InterceptorRefs;
 import org.apache.struts2.convention.annotation.Namespace;
-import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.Results;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.springframework.context.annotation.Scope;
 
+import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
 
-//@InterceptorRefs({@InterceptorRef("customException"),@InterceptorRef("defaultStack")})
-@ParentPackage(value="convention-default")  // interceptor-package  
 @Namespace("/default")   
-//@Controller
 @SuppressWarnings("serial")
 @Scope("prototype")
-@ExceptionMappings( { @ExceptionMapping(exception = "java.lange.RuntimeException", result = "exception") })
+@ExceptionMappings( { @ExceptionMapping(exception = "java.lange.RuntimeException", result = Action.ERROR) })
 @Results({
-  @Result(name="login", location="/user/login.jsp")
+  @Result(name=Action.LOGIN, location="/user/login.jsp"),
+  @Result(name=Action.ERROR, location="/error.jsp")
 })
 public class BaseAction extends ActionSupport implements Preparable,ServletRequestAware {
 

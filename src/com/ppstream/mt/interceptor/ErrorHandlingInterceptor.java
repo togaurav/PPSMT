@@ -17,7 +17,6 @@ import com.ppstream.mt.exception.BaseException;
  * 异常拦截器
  * @author liupeng
  */
-@ParentPackage(value="convention-default")
 public class ErrorHandlingInterceptor extends AbstractInterceptor {
 
 	private static final long serialVersionUID = 1L;
@@ -32,20 +31,20 @@ public class ErrorHandlingInterceptor extends AbstractInterceptor {
         return Action.INPUT;
     }
     
-    /** *//**
+    /** 
      * 处理异常
-     * @param e
      */
     private void handleException(Exception e) {
         boolean handled = false;
         Throwable throwEx = e;
         while (throwEx != null) {
-            if(throwEx instanceof BaseException ) {
+            if(throwEx instanceof BaseException ) { // 可得知是什么业务异常
             	BaseException  be = (BaseException )throwEx;
-            	System.out.println("捕获异常："+throwEx.getMessage());
-                String errorCode = be.getMessageCode();
+            	String errorCode = be.getMessageCode();
+            	String errorMessage = throwEx.getMessage();
+            	System.out.println("捕获异常："+ errorMessage);
                 
-                // 从缓存中通过ErrorCode取得对应message
+                // 通过ErrorCode取得对应业务异常信息
                 String errorMsg = getMessage(errorCode);
                 
                 // 页面显示错误提示信息
@@ -55,7 +54,7 @@ public class ErrorHandlingInterceptor extends AbstractInterceptor {
             throwEx = throwEx.getCause();
         }
         
-        if(!handled) {
+        if(!handled) {  // 显示默认异常
             fillDefaultError();
         }
     }
@@ -69,14 +68,11 @@ public class ErrorHandlingInterceptor extends AbstractInterceptor {
     }
     
     private void fillError4Display(String msg) {
-        getRequest().setAttribute("_error_msg_", msg);
+        getRequest().setAttribute("errorMsg", msg);
     }
-    /**
-     * 当为 自定义的BusinessException时，根据抛出异常时的msgCode，取得对应的显示信息。
-		msgCode与显示信息的对应关系 可先配置好，系统启动时将其缓存起来。
-		如果非BusinessException，则统一显示为 “系统忙，请稍候再试。”
-     */
+    
     private String getMessage(String errorCode){
+    	// 根据errorCode来获取业务异常信息
     	return "error";
     }
     
