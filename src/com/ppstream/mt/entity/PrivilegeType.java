@@ -38,7 +38,7 @@ public class PrivilegeType implements Serializable{
 	private Integer sortIndex;
 	
 	@OneToMany(fetch=FetchType.EAGER,mappedBy="privilegeType",cascade=CascadeType.ALL)
-	@OrderColumn(name="showNav")
+	@OrderColumn(name="sortIndex")
 	private Set<PrivilegeCate> privilegeCates;
 
 	public Set<PrivilegeCate> getPrivilegeCates() {

@@ -3,6 +3,8 @@ package com.ppstream.mt.dao;
 import java.io.Serializable;
 import java.util.List;
 
+import com.ppstream.mt.utils.pager.TbData;
+
 public interface BaseDao {
 	
 	public void save(Object entity);
@@ -22,4 +24,8 @@ public interface BaseDao {
 	public <T> List<T> findBySql(final String sql, final Class<T> entityType,final Object... args);
 	
 	public <T> List<T> findByHql(final String hql, final Object... args);
+	
+	public <T> TbData runNativeSql(final Class<T>[] entityClz,
+			final int pageSize, final int pageNo, final String sql,
+			final Object... args);
 }

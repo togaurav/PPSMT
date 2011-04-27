@@ -14,35 +14,33 @@ function showItem(i,obj){
 function psort(sid,obj){	// 修改资源排序
 	$('#p_img_'+sid).show();
 	obj.disabled = true;
-	alert("sort_index="+$(obj).prev().val());
-	<%-- 
+	var sortIndex = $(obj).prev().val();
 	$.ajax({
 	   type: "POST",
-	   url: "/index.php/privilege/sort",
-	   data: "sort_index="+$(obj).prev().val()+'&privilege_id='+sid+'&rand='+ new Date().getTime(),
+	   url: "${pageContext.request.contextPath}/default/editPrivilegeSortIndex.action",
+	   data: "sortIndex="+sortIndex+'&privilegeId='+sid,  // +'&rand='+ new Date().getTime()
 	   success: function(msg){
 		 $('#p_img_'+sid).hide();
 		 obj.disabled = false;
 	   }
 	});
-	--%>
+	
 	
 }
 function pcsort(sid,obj){    // 资源分类修改排序
 	$('#pc_img_'+sid).show();
 	obj.disabled = true;
-	alert("sort_index="+$(obj).prev().val());
-	<%-- 
+	var sortIndex = $(obj).prev().val();
 	$.ajax({
 	   type: "POST",
-	   url: "/index.php/privilege_cate/sort",
-	   data: "sort_index="+$(obj).prev().val()+'&cate_id='+sid+'&rand='+ new Date().getTime(),
+	   url: "${pageContext.request.contextPath}/default/editCateSortIndex.action",
+	   data: "sortIndex="+sortIndex+'&cateId='+sid,  // +'&rand='+ new Date().getTime()
 	   success: function(msg){
 		 $('#pc_img_'+sid).hide();
 		 obj.disabled = false;
 	   }
 	});
-	--%>
+	
 }
 
 

@@ -34,7 +34,7 @@ public class Role implements Serializable{
 	// 被控
 	@ManyToMany(
         cascade = {CascadeType.PERSIST, CascadeType.MERGE},
-        fetch=FetchType.LAZY,
+        fetch=FetchType.EAGER,
         mappedBy = "roles",
         targetEntity = User.class
     )

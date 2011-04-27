@@ -1,6 +1,12 @@
 package com.ppstream.mt.aop;
 
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
@@ -10,6 +16,10 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
+
+import com.opensymphony.xwork2.Action;
+import com.opensymphony.xwork2.ActionContext;
+import com.ppstream.mt.bean.GPrivilege;
 
 @Component("logAop")
 @Aspect 
@@ -25,12 +35,14 @@ public class LogAop {
 	 * com.ppstream.mt.action..  两个点表示包路径下的子包的类也要拦截
 	 * com.ppstream.mt.action..*.*   子包的所有类中的所有方法,第一个*表示方法,第二个*是类
 	 * (..) 代表方法参数随意,可有可无可多可少
+	 * 
+	 * execution(* com.ppstream.mt.action.PrivilegeAdmin.*(..))    com.ppstream.mt.action.PrivilegeAdmin类下任意方法的执行
 	 */
 
 	/** 
 	 * 定义控制器方法切入点
      */
-	@Pointcut("execution(* com.ppstream.mt.action..*.*(..))")
+	@Pointcut("execution(* com.ppstream.mt.action.PrivilegeAdmin.*(..)) || execution(* com.ppstream.mt.action.RoleAdmin.*(..)) || execution(* com.ppstream.mt.action.UserAdmin.*(..))")
     public void inActionMethod(){} 
 	
 	/** 
@@ -64,10 +76,25 @@ public class LogAop {
        
         long begin = System.currentTimeMillis();
         sb.append("开始时间：[").append(new Date().toString()).append("]");
-        System.out.println(sb.toString());
-        //实际方法执行           -------------------  [增： 在此权限控制]
-        Object result = pjp.proceed();  // pjp.getArgs()
-       
+        // 当前执行的action
+        StringBuilder actionSB = new StringBuilder();
+        actionSB.append("/default/").append(pjp.getSignature().getName()).append(".action");
+        String action = actionSB.toString();
+        // 权限集合
+        Map session = ActionContext.getContext().getSession();  
+        HashMap<String, HashMap<String, HashSet<GPrivilege>>> maps = (HashMap<String, HashMap<String, HashSet<GPrivilege>>>)session.get("maps");
+        // 权限控制
+        boolean flag = hasPrivilege(maps,action);
+        
+        // 方法执行
+        Object result = null;
+        if(true){ // flag
+        	result = pjp.proceed(pjp.getArgs());
+        }else{
+        	ActionContext ac = ActionContext.getContext();
+        	ac.put("privilegeTips", "您无此权限，请联系上级主管！");        	
+            return Action.INPUT;   // 返回默认界面
+        }
         long end = System.currentTimeMillis();
         sb.append("结束时间：[")
                 .append(new Date().toString())
@@ -77,6 +104,32 @@ public class LogAop {
         return result;
     }
    
+    public boolean hasPrivilege(HashMap<String, HashMap<String, HashSet<GPrivilege>>> maps,String action){
+    	boolean flag = false; // 默认是无权限的
+        // 遍历
+        Set<String> typeSet = maps.keySet();
+        Iterator<String> typeIterator = typeSet.iterator();
+//        System.out.println("action:" + action);
+        while(typeIterator.hasNext()){
+        	String type = typeIterator.next();
+        	HashMap<String, HashSet<GPrivilege>> cateMaps = maps.get(type);
+        	Collection<HashSet<GPrivilege>> gPrivileges = cateMaps.values();
+        	Iterator<HashSet<GPrivilege>> gPrivilegeSetIterator = gPrivileges.iterator();
+        	while(gPrivilegeSetIterator.hasNext()){
+        		HashSet<GPrivilege> gPrivilegeSet = gPrivilegeSetIterator.next();
+        		Iterator<GPrivilege> gPrivilegeIterator = gPrivilegeSet.iterator();
+        		while(gPrivilegeIterator.hasNext()){
+        			GPrivilege gPrivilege = gPrivilegeIterator.next();
+//        			System.out.println(gPrivilege.getAction());
+        			if(action.equalsIgnoreCase(gPrivilege.getAction())){
+        				flag = true;
+        			}
+        		}
+        	}
+        }
+        return flag;
+    }
+    
     /** 
      * 切入点抛出异常
      * @param jp        切入点

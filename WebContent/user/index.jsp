@@ -13,7 +13,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 <script type="text/javascript"
 	src="http://code.jquery.com/jquery-1.4.4.min.js"></script>
-
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath}/css/admin.css">
 <script type="text/javascript"
 	src="http://jquery.bassistance.de/treeview/jquery.treeview.js"></script>
 <link rel="stylesheet"
@@ -45,7 +46,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<div id="admin-header-logo"><img src="${pageContext.request.contextPath}/images/logo.png"/></div>
 				<div id="admin-header-menu">
 				<div id="admin-header-userinfo"><s:property value="#session.roleName" />：<s:property value="#session.userName" />/<s:property value="#session.nickName" /></div>
-				<div id="admin-header-ip">IP：XXXX 
+				<div id="admin-header-ip">IP：<s:property value="#session.ip" /> 
 				<a href="${pageContext.request.contextPath}/default/logout.action" target="_parent">[ 退出 ]</a></div>
 				<div id="admin-header-refer">
 					<a href="javascript:void(0)" 
@@ -74,7 +75,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 											<s:if test="%{#privileteSet.showNav == 1 }">
 											<li>
 											<span class="file">
-												<a href="${pageContext.request.contextPath}/default/roleList.action" target="main-iframe">
+												<a href="${pageContext.request.contextPath}/default/privilegeCateList.action" target="main-iframe">
 													<s:property	value="#privileteSet.name" />
 												</a>
 											</span>

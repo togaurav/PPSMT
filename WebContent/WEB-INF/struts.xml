@@ -21,6 +21,7 @@
      <constant name="struts.enable.DynamicMethodInvocation" value="true" />
      <constant name="struts.convention.action.disableScanning" value="false" />
      
+     <constant name="struts.objectFactory" value="spring" />  
      <constant name="struts.objectFactory.spring.autoWire.alwaysRespect" value="true" />   
         
 </struts>

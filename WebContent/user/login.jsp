@@ -36,7 +36,7 @@ $(document).ready(function(){
 </script>
 </head>
 <body>
-
+<s:property value="#request.loginTips"/> 
 <form action="${pageContext.request.contextPath}/default/login.action" method="post" id="UserLogIn">
 <table border="1" width="500px">
 	<tr>
@@ -52,7 +52,25 @@ $(document).ready(function(){
 		<input type="submit" class="submit" value="登录" /></td>
 	</tr>
 </table>
-</form>
 
+<!-- 
+<div style="font-size: 20px; line-height: 50px; font-family: 黑体;">PPS运维监控系统</div>
+<table id="login_form">
+	<tr>
+		<td class="form_head">用户名：</td>
+		<td class="form_field"><input name="username" size="10" type="text"></td>
+	</tr>
+	<tr>
+		<td class="form_head">密&nbsp;&nbsp;码：</td>
+
+		<td class="form_field"><input name="password" size="10" type="password"></td>
+	</tr>
+	<tr>
+		<td class="form_center" colspan="2"><input value="进入" name="Submit" type="submit"></td>
+	</tr>
+</table>
+ -->
+
+</form>
 </body>
 </html>

@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>设置角色权限</title>
+<title>设置用户权限</title>
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.4.4.min.js"></script>
 <script type="text/javascript">
 function selectRev(cate_id)
@@ -25,9 +25,10 @@ function selectAll(cate_id)
 </head>
 <body>
 
+
 <div id="main">
-<form action="${pageContext.request.contextPath}/default/assignPrivilegeToRole.action" method="post">
-<input name="roleId" value="${roleId}" type="hidden" />
+<form action="${pageContext.request.contextPath}/default/assignPrivilegeToUser.action" method="post">
+<input name="userId" value="${userId}" type="hidden" />
 <table>
 	<tr>
 		<td class="form_center">
@@ -71,6 +72,7 @@ function selectAll(cate_id)
 </table>
 </form>
 </div>
+
 
 </body>
 </html>

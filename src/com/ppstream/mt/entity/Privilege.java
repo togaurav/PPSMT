@@ -48,17 +48,17 @@ public class Privilege implements Serializable{
 	
 	// 被控
 	@ManyToMany(
-	        cascade = {CascadeType.PERSIST, CascadeType.MERGE},  
-	        fetch=FetchType.LAZY,
-	        mappedBy = "privileges",
-	        targetEntity = Role.class
-	    )
+        cascade = {CascadeType.PERSIST, CascadeType.MERGE},  
+        fetch=FetchType.EAGER,
+        mappedBy = "privileges",
+        targetEntity = Role.class
+    )
 	private Set<Role> roles;
 	
 	// 被控
 	@ManyToMany(
         cascade = {CascadeType.PERSIST, CascadeType.MERGE},
-        fetch=FetchType.LAZY,
+        fetch=FetchType.EAGER,
         mappedBy = "privileges",
         targetEntity = User.class
     )

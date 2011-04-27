@@ -135,8 +135,6 @@ public class RoleAdmin extends BaseAction{
 	        }
 		)
 	public String assignPrivilegeToRole() throws Exception{
-		System.out.println("roleId:" + roleId);
-		System.out.println("privilegeIds:" + privilegeIds);
 		authorityService.configRolePrivilege(roleId,privilegeIds);
 		return SUCCESS;
 	}

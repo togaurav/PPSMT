@@ -25,7 +25,8 @@ import com.opensymphony.xwork2.Preparable;
 @ExceptionMappings( { @ExceptionMapping(exception = "java.lange.RuntimeException", result = Action.ERROR) })
 @Results({
   @Result(name=Action.LOGIN, location="/user/login.jsp"),
-  @Result(name=Action.ERROR, location="/error.jsp")
+  @Result(name=Action.ERROR, location="/error.jsp"),
+  @Result(name=Action.INPUT, location="/default.jsp")
 })
 public class BaseAction extends ActionSupport implements Preparable,ServletRequestAware {
 

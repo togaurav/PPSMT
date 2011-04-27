@@ -18,7 +18,7 @@ import com.ppstream.mt.entity.Role;
 /**
  * 权限管理 模块的service
  */
-@Service
+@Service("authorityService")
 @Transactional
 public class AuthorityService {
 	
@@ -92,6 +92,14 @@ public class AuthorityService {
 		type.getPrivilegeCates().remove(pc);  // 删除关联
 		baseDao.delete(pc);
 	}
+	/**
+	 * 修改资源分类的排序
+	 */
+	public void editPrivilegeCateSortIndex(Integer cateId,Integer sortIndex){
+		PrivilegeCate pc = this.getPrivilegeCateById(cateId); 
+		pc.setSortIndex(sortIndex);
+		baseDao.save(pc);
+	}
 	
 	/**
 	 * 新增一级权限
@@ -127,6 +135,15 @@ public class AuthorityService {
 		privilege.setName(name);
 		privilege.setShowNav(showNav);
 		baseDao.update(privilege);
+	}
+	
+	/**
+	 * 修改资源排序
+	 */
+	public void editPrivilegeSortIndex(Integer privilegeId,Integer sortIndex){
+		Privilege privilege = this.getPrivilegeById(privilegeId); 
+		privilege.setSortIndex(sortIndex);
+		baseDao.save(privilege);
 	}
 	
 	

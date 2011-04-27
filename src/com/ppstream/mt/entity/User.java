@@ -116,7 +116,8 @@ public class User implements Serializable{
 	
 	// 主控
 	@ManyToMany(
-        targetEntity=Privilege.class,fetch=FetchType.EAGER,
+        targetEntity=Privilege.class,
+        fetch=FetchType.EAGER,
         cascade={CascadeType.PERSIST, CascadeType.MERGE}
     )
 	@JoinTable(
