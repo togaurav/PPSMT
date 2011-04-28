@@ -3,7 +3,6 @@ package com.ppstream.mt.entity;
 import java.io.Serializable;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -33,7 +32,6 @@ public class Role implements Serializable{
 	
 	// 被控
 	@ManyToMany(
-        cascade = {CascadeType.PERSIST, CascadeType.MERGE},
         fetch=FetchType.EAGER,
         mappedBy = "roles",
         targetEntity = User.class
@@ -42,8 +40,7 @@ public class Role implements Serializable{
 	
 	// 主控
     @ManyToMany(
-        targetEntity=Privilege.class,fetch=FetchType.EAGER,
-        cascade={CascadeType.PERSIST, CascadeType.MERGE}
+        targetEntity=Privilege.class
     )
 	@JoinTable(
 		name="privilege_role_user",

@@ -3,10 +3,8 @@ package com.ppstream.mt.entity;
 import java.io.Serializable;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -53,29 +51,12 @@ public class User implements Serializable{
 	@Column(name = "is_company",nullable = false)
 	private Integer isCompany;
 	
-//	@Column(name = "role_id",nullable = true)
-//	private Integer roleId;
-	
 	@Column(name = "group_leader",nullable = true)
 	private Integer groupLeader;
-	
-//	@Column(name = "group_id",nullable = true)
-//	private Integer groupId;
 	
 	@ManyToOne
     @JoinColumn(name="group_id")
 	private Group group;
-	
-//	public Integer getGroupId() {
-//		return groupId;
-//	}
-//
-//
-//	public void setGroupId(Integer groupId) {
-//		this.groupId = groupId;
-//	}
-
-
 
 	@Column(name = "nick_name",nullable = true, length = 100)
 	private String nickName;
@@ -102,9 +83,7 @@ public class User implements Serializable{
 	 */
 	// 主控
 	@ManyToMany(
-        targetEntity=Role.class,
-        fetch=FetchType.EAGER,
-        cascade={CascadeType.PERSIST, CascadeType.MERGE}
+        targetEntity=Role.class
     )
 	@JoinTable(
 		name="users_has_roles",
@@ -116,9 +95,7 @@ public class User implements Serializable{
 	
 	// 主控
 	@ManyToMany(
-        targetEntity=Privilege.class,
-        fetch=FetchType.EAGER,
-        cascade={CascadeType.PERSIST, CascadeType.MERGE}
+        targetEntity=Privilege.class
     )
 	@JoinTable(
 		name="privilege_role_user",

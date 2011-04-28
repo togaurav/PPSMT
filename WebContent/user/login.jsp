@@ -8,6 +8,8 @@
 <meta http-equiv="keywords" content="">
 <meta http-equiv="description" content="">
 <link rel="shortcut icon" href="" />
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath}/css/admin.css">
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.4.4.min.js"></script>
 <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.8/jquery.validate.min.js"></script>
 <script type="text/javascript">
@@ -32,12 +34,13 @@ $(document).ready(function(){
 		}
 	});
 
-})
+});
 </script>
 </head>
 <body>
 <s:property value="#request.loginTips"/> 
 <form action="${pageContext.request.contextPath}/default/login.action" method="post" id="UserLogIn">
+<!-- 
 <table border="1" width="500px">
 	<tr>
 		<td>用户名</td>
@@ -52,8 +55,7 @@ $(document).ready(function(){
 		<input type="submit" class="submit" value="登录" /></td>
 	</tr>
 </table>
-
-<!-- 
+ -->
 <div style="font-size: 20px; line-height: 50px; font-family: 黑体;">PPS运维监控系统</div>
 <table id="login_form">
 	<tr>
@@ -69,7 +71,7 @@ $(document).ready(function(){
 		<td class="form_center" colspan="2"><input value="进入" name="Submit" type="submit"></td>
 	</tr>
 </table>
- -->
+
 
 </form>
 </body>

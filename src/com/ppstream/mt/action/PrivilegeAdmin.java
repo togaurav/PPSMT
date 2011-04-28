@@ -6,7 +6,6 @@ import javax.annotation.Resource;
 
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Result;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.ppstream.mt.entity.Privilege;
@@ -216,7 +215,6 @@ public class PrivilegeAdmin extends BaseAction {
 	)
 	public String editPrivilegeView() throws Exception{
 		Privilege privilege = authorityService.getPrivilegeById(privilegeId);
-		System.out.println("cateId:" + privilege.getPrivilegeCate().getId());
 		List<PrivilegeCate> catelists = authorityService.getPrivilegeCateList();
 		request.setAttribute("privilege", privilege);
 		request.setAttribute("catelists", catelists);

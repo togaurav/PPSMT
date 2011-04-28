@@ -75,7 +75,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 											<s:if test="%{#privileteSet.showNav == 1 }">
 											<li>
 											<span class="file">
-												<a href="${pageContext.request.contextPath}/default/privilegeCateList.action" target="main-iframe">
+												<a href="${pageContext.request.contextPath}<s:property value="#privileteSet.action" />" target="main-iframe">
 													<s:property	value="#privileteSet.name" />
 												</a>
 											</span>

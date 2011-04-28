@@ -115,6 +115,10 @@ public class BaseDaoImpl extends HibernateDaoSupport implements BaseDao{
 				});
 	}
 	
+	
+	/**
+	 ****************************************************************************** 基于SQL分页查询*********/
+	
 	private final static Pattern PTN_ORDERBY = Pattern.compile("order\\s+by");
 
 	private static String trimOrderBy(String sql) {
@@ -129,12 +133,9 @@ public class BaseDaoImpl extends HibernateDaoSupport implements BaseDao{
 	
 	private long queryCount(final String sql, final Object... args) {
 		String s2 = sql;
-		// TODO:select c1,'from',c3 from tableA
-		// where,--------这样的语句也是合法的，需要用正则表达式找到前面的带引号的from,之后再用indexof(' from ');
 		int pos = s2.toLowerCase().indexOf(" from ");
 		s2 = "select count(*) " + s2.substring(pos);
-		// select count(*) from...不能带order by 语句，
-		s2 = trimOrderBy(s2);
+		s2 = trimOrderBy(s2);   // select count(*) from...不能带order by 语句
 
 		final String countSql = s2;
 		Object result = getHibernateTemplate().executeWithNativeSession(
@@ -181,7 +182,7 @@ public class BaseDaoImpl extends HibernateDaoSupport implements BaseDao{
 						}
 
 						int innerPageSize = pageSize;
-						if (innerPageSize > 200) {
+						if (innerPageSize > 200) {		// 最多查200条
 							innerPageSize = 200;
 						} else if (innerPageSize < 1) {
 							innerPageSize = 1;
@@ -240,5 +241,61 @@ public class BaseDaoImpl extends HibernateDaoSupport implements BaseDao{
 		return (TbData) result;
 	}
 	
+	/**
+	 ****************************************************************************** 基于HQL分页查询*********/
+	public int getRows(String hql){  
+        return getHibernateTemplate().find(hql).size();  
+    }
+	
+	public TbData runHQL(final int totalCount,final int pageSize, final int pageNo, final String hql,final Object... args){
+		Object result = getHibernateTemplate().executeWithNativeSession(
+				new HibernateCallback() {
+					public Object doInHibernate(Session session)throws HibernateException, SQLException {
+						Query q = session.createQuery(hql);
+						if (args != null) {
+							for (int i = 0; i < args.length; i++) {
+								q.setParameter(i, args[i]);
+							}
+						}
 
+						int innerPageSize = pageSize;
+						if (innerPageSize > 200) {		// 最多查200条
+							innerPageSize = 200;
+						} else if (innerPageSize < 1) {
+							innerPageSize = 1;
+						}
+						q.setFirstResult((pageNo - 1) * innerPageSize); // 设置分页起始记录号
+						q.setMaxResults(innerPageSize); // 设置页内数据量
+						
+						PgInfo pageInfo = new PgInfo();
+						pageInfo.setTotalCount(totalCount); // 总共记录数
+						pageInfo.setPageSize(innerPageSize); // 每页大小
+						pageInfo.setFirst((pageNo == 1 ? true : false)); // 是否为第一页   
+						int sumPage = (int) Math.ceil((double) totalCount
+								/ innerPageSize); // 设置总页数
+						if (sumPage == 0) { // 是否为最后一页
+							pageInfo.setLast(true);
+						} else {
+							pageInfo.setLast((pageNo == sumPage ? true
+									: false));
+						}
+						pageInfo.setSumPage(sumPage); // 总页数
+						if (sumPage == 0) {
+							pageInfo.setPageNo(0); // 当前页
+						} else {
+							pageInfo.setPageNo(pageNo); // 当前页
+						}
+						
+						List<?> list = q.list();
+						
+						TbData data = new TbData();
+						
+						data.setList(list);
+						data.setPageInfo(pageInfo);
+						return data;
+					}
+				});
+		return (TbData)result;
+	}
+	
 }

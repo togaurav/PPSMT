@@ -5,12 +5,45 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>增加用户</title>
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/admin.css">
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.8/jquery.validate.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+
+	$("#addUserForm").validate({
+		rules: {
+			userName: {
+				required: true
+			},
+			nickName: {
+				required: true
+			},
+			password: {
+				required: true
+			}
+		},
+		messages: {
+			userName: {
+				required: "Please enter a login name"
+			},
+			nickName: {
+				required: "Please enter a nick name"
+			},
+			password: {
+				required: "Please provide a password"
+			}
+		}
+	});
+
+});
+</script>
 </head>
 <body>
 	<div id="body">
 		<h3>添加用户</h3>
 		<div id="main">
-			<form
+			<form id="addUserForm"
 				action="${pageContext.request.contextPath}/default/addUser.action"
 				method="post">
 				<table>

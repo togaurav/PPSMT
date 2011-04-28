@@ -3,7 +3,6 @@ package com.ppstream.mt.entity;
 import java.io.Serializable;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,7 +10,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
@@ -41,14 +39,13 @@ public class Privilege implements Serializable{
 	@Column(name = "sort_index",nullable = true)
 	private Integer sortIndex;
 	
-	@ManyToOne(fetch=FetchType.EAGER)
+	@ManyToOne   // 多对一的这边，fetch的默认属性是fetch=FetchType.EAGER
     @JoinColumn(name="cate_id")
 	private PrivilegeCate privilegeCate;
 	
 	
 	// 被控
 	@ManyToMany(
-        cascade = {CascadeType.PERSIST, CascadeType.MERGE},  
         fetch=FetchType.EAGER,
         mappedBy = "privileges",
         targetEntity = Role.class
@@ -57,7 +54,6 @@ public class Privilege implements Serializable{
 	
 	// 被控
 	@ManyToMany(
-        cascade = {CascadeType.PERSIST, CascadeType.MERGE},
         fetch=FetchType.EAGER,
         mappedBy = "privileges",
         targetEntity = User.class

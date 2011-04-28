@@ -6,6 +6,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>员工列表</title>
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath}/css/admin.css">
 </head>
 <body>
 
@@ -55,11 +57,19 @@
 					</td>
 					<td><input class="" value="修改"
 						onclick="location.href='${pageContext.request.contextPath}/default/editUserView.action?userId=<s:property value="#user.id"/>'"
-						type="button">&nbsp; <input class="" value="停用"
+						type="button">&nbsp; 
+						<s:if test="%{#user.status == 1}">
+						<input class="" value="停用"
 						onclick="if(confirm('确定停用？'))location.href='${pageContext.request.contextPath}/default/changeUserStatusToStop.action?userId=<s:property value="#user.id"/>'"
-						type="button"> &nbsp;<input class="" value="设置权限"
+						type="button"> &nbsp;
+						</s:if> 
+						<s:else>
+						<input class="" value="启用"
+						onclick="if(confirm('确定启用？'))location.href='${pageContext.request.contextPath}/default/changeUserStatusToUse.action?userId=<s:property value="#user.id"/>'"
+						type="button"> &nbsp;
+						</s:else>
+						<input class="" value="设置权限"
 						onclick="location.href='${pageContext.request.contextPath}/default/assignPrivilegeToUserView.action?userId=<s:property value="#user.id"/>'" type="button">&nbsp; 
-						<!-- <input class="" value="设置业务" onclick="location.href=''" type="button"> -->
 					</td>
 				</tr>
 			</s:iterator>

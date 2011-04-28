@@ -1,5 +1,6 @@
 package com.ppstream.mt.service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -14,6 +15,7 @@ import com.ppstream.mt.entity.Privilege;
 import com.ppstream.mt.entity.PrivilegeCate;
 import com.ppstream.mt.entity.PrivilegeType;
 import com.ppstream.mt.entity.Role;
+import com.ppstream.mt.entity.User;
 
 /**
  * 权限管理 模块的service
@@ -38,9 +40,10 @@ public class AuthorityService {
 	 * 取得二级权限列表
 	 */
 	public List<PrivilegeCate> getPrivilegeCateList(){
-		String hql = "from PrivilegeCate";
+		String hql = "from PrivilegeCate as pc left join fetch pc.privileges";
 		List<PrivilegeCate> lists = baseDao.findByHql(hql, null);
-		return lists;
+		HashSet set=new HashSet(lists);
+		return new ArrayList(set);
 	}
 	
 	/**
@@ -152,8 +155,25 @@ public class AuthorityService {
 	 */
 	public void deletePrivilege(Integer privilegeId){
 		Privilege privilege = this.getPrivilegeById(privilegeId);
-		PrivilegeCate cates = privilege.getPrivilegeCate();
-		cates.getPrivileges().remove(privilege);  // 先从一的一方删除关联
+		PrivilegeCate cate = privilege.getPrivilegeCate();
+		cate.getPrivileges().remove(privilege);  // 先从一的一方删除关联
+		
+		Set<Role> roles = privilege.getRoles();
+		Iterator<Role> roleIterator = roles.iterator();
+		while(roleIterator.hasNext()){
+			Role role = roleIterator.next();
+			role.getPrivileges().remove(privilege);
+			baseDao.update(role);
+		}
+		
+		Set<User> users = privilege.getUsers();
+		Iterator<User> userIterator = users.iterator();
+		while(userIterator.hasNext()){
+			User user = userIterator.next();
+			user.getPrivileges().remove(privilege);
+			baseDao.update(user);
+		}
+		
 		baseDao.delete(privilege);
 	}
 	
@@ -237,8 +257,6 @@ public class AuthorityService {
 				role.getPrivileges().add(privilege);
 			}
 		}
-		System.out.println("size 1 : "+role.getPrivileges().size());
-		System.out.println("length 1 : "+ids.length);
 //		Set<Privilege> privilegeSet = role.getPrivileges();
 //		// 不包含，则增加
 //		String[] ids = privilegeIds.split(privilegeIds);

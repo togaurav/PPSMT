@@ -29,7 +29,7 @@ public class Group implements Serializable{
 	@Column(name = "group_name",nullable = false, length = 100)
 	private String groupName;
 	
-	@OneToMany(fetch=FetchType.EAGER,mappedBy="group",cascade=CascadeType.ALL)
+	@OneToMany(mappedBy="group",cascade=CascadeType.ALL)
 	private Set<User> users;
 
 	public Integer getId() {

@@ -6,6 +6,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.4.4.min.js"></script>
 <title>资源列表</title>
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath}/css/admin.css">
 <script type="text/javascript">
 function showItem(i,obj){
 	$('tr.item_'+i).toggle();
@@ -19,7 +21,7 @@ function psort(sid,obj){	// 修改资源排序
 	   type: "POST",
 	   url: "${pageContext.request.contextPath}/default/editPrivilegeSortIndex.action",
 	   data: "sortIndex="+sortIndex+'&privilegeId='+sid,  // +'&rand='+ new Date().getTime()
-	   success: function(msg){
+	   success: function(data, textStatus){
 		 $('#p_img_'+sid).hide();
 		 obj.disabled = false;
 	   }
@@ -35,7 +37,7 @@ function pcsort(sid,obj){    // 资源分类修改排序
 	   type: "POST",
 	   url: "${pageContext.request.contextPath}/default/editCateSortIndex.action",
 	   data: "sortIndex="+sortIndex+'&cateId='+sid,  // +'&rand='+ new Date().getTime()
-	   success: function(msg){
+	   success: function(data, textStatus){
 		 $('#pc_img_'+sid).hide();
 		 obj.disabled = false;
 	   }
@@ -116,7 +118,7 @@ jQuery(function($){
 				<input class="del_btn" value="删除" 
 					onclick="if(confirm('确认删除？'))location.href='${pageContext.request.contextPath}/default/deletePrivilege.action?privilegeId=<s:property value="#privilege.id" />'" 
 					type="button" />
-				<input style="width: 30px;" value="0" type="text" /> 
+				<input style="width: 30px;" value="<s:property value="#privilege.sortIndex" />" type="text" /> 
 				<input value="修改排序" onclick="psort(<s:property value="#privilege.id" />,this)" type="button">
 				<span id="p_img_1100" style="display: none;"><img src="/themes/images/loading.gif"></span>
 			</td>

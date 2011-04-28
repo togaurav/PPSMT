@@ -2,13 +2,13 @@ package com.ppstream.mt.action;
 
 import javax.annotation.Resource;
 
+import net.sf.json.JSONObject;
+
 import org.apache.struts2.convention.annotation.Action;
-import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
 
 import com.ppstream.mt.service.AuthorityService;
 
-@ParentPackage("json-default")
 public class JsonAction extends BaseAction{
 	
 	private static final long serialVersionUID = 1L;
@@ -18,13 +18,14 @@ public class JsonAction extends BaseAction{
 	private Integer privilegeId;
 	private Integer sortIndex;
 	private Integer cateId;
-	private boolean success;
 	
-	public boolean isSuccess() {
-		return success;
+	private String jsonData;
+	
+	public String getJsonData() {
+		return jsonData;
 	}
-	public void setSuccess(boolean success) {
-		this.success = success;
+	public void setJsonData(String jsonData) {
+		this.jsonData = jsonData;
 	}
 	public Integer getPrivilegeId() {
 		return privilegeId;
@@ -56,12 +57,14 @@ public class JsonAction extends BaseAction{
 	// 修改资源分类排序
 	@Action(value="editCateSortIndex",
 		results={
-			@Result(name="success", type="json")  
+			@Result(name="success", location="/jsonData.jsp")  
         }
 	)
 	public String editCateSortIndex() throws Exception{
 		authorityService.editPrivilegeCateSortIndex(cateId,sortIndex);
-		success = true;
+//		JSONObject json = new JSONObject();
+//		json.put("success", true);
+//		setJsonData(json.toString());
 		return SUCCESS;
 	}
 	
@@ -69,13 +72,15 @@ public class JsonAction extends BaseAction{
 	// 修改资源排序
 	@Action(value="editPrivilegeSortIndex",
 		results={
-			@Result(name="success", type="json")  
+			@Result(name="success", location="/jsonData.jsp")  
         }
 	)
 	public String editPrivilegeSortIndex() throws Exception{
 		authorityService.editPrivilegeSortIndex(privilegeId,sortIndex);
-		success = true;
-		return SUCCESS;
+//		JSONObject json = new JSONObject();
+//		json.put("success", true);
+//		setJsonData(json.toString());
+		return SUCCESS; 
 	}
 
 }

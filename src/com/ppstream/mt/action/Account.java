@@ -17,8 +17,6 @@ import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ModelDriven;
 import com.ppstream.mt.bean.GPrivilege;
 import com.ppstream.mt.entity.Privilege;
-import com.ppstream.mt.entity.PrivilegeCate;
-import com.ppstream.mt.entity.PrivilegeType;
 import com.ppstream.mt.entity.Role;
 import com.ppstream.mt.entity.User;
 import com.ppstream.mt.formmodel.UserLogIn;
@@ -95,11 +93,11 @@ public class Account extends BaseAction implements ModelDriven<UserLogIn> {
 			roleName.append(role.getRoleName());
 			roleName.append(',');
 			// 角色权限
-			Set<Privilege> rolePrivileges = role.getPrivileges();
+			Set<Privilege> rolePrivileges = userService.getPrivilegeByRoleId(role.getId());
 			maps = userService.setPrivilegeToMap(maps, rolePrivileges);
 		}
 		// 用户权限
-		Set<Privilege> userPrivileges = user.getPrivileges();
+		Set<Privilege> userPrivileges = userService.getPrivilegeByUserId(user.getId());
 		maps = userService.setPrivilegeToMap(maps, userPrivileges);
 		
 		// 保存session,使用HttpSession,出现第一次无数据的情况

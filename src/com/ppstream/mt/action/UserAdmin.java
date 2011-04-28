@@ -136,6 +136,18 @@ private static final long serialVersionUID = 1L;
 		return SUCCESS;
 	}
 	
+	// 启用账户
+	@Action(value="changeUserStatusToUse",
+		results={
+			@Result(name="success", type="redirectAction",location = "userList.action" ) 
+        }
+	)
+	public String changeUserStatusToUse() throws Exception{
+		userService.changeUserStatus(userId,1);
+		return SUCCESS;
+	}
+	
+	
 	// 增加用户的页面
 	@Action(value="addUserView",
 		results={
@@ -157,7 +169,7 @@ private static final long serialVersionUID = 1L;
         }
 	)
 	public String addUser() throws Exception{
-		// 校验 (不为空或唯一性设置)
+		// 校验,userName应该可以重复，因为有Key [两个汪洋]
 		
 		// 保存
 		userService.addOrUpdateUser(null,userName,password,email,roleIds,groupLeader,groupId,nickName,subPhone);

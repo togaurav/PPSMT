@@ -41,11 +41,11 @@ public class PrivilegeCate implements Serializable{
 	@Column(name = "sort_index",nullable = true)
 	private Integer sortIndex;
 	
-	@OneToMany(fetch=FetchType.EAGER,mappedBy="privilegeCate",cascade=CascadeType.ALL)
+	@OneToMany(mappedBy="privilegeCate",cascade=CascadeType.ALL)  // 在一对多的这边，fetch的默认属性是fetch=FetchType.LAZY 
 	@OrderColumn(name="sortIndex")
 	private Set<Privilege> privileges;
 	
-	@ManyToOne(fetch=FetchType.EAGER)
+	@ManyToOne 
 	@NotFound(action=NotFoundAction.IGNORE)  // one一方的数据不存在,即PrivilegeType一方
     @JoinColumn(name="type_id")
 	private PrivilegeType privilegeType;
