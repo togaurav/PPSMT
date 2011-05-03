@@ -1,0 +1,10 @@
+struts2.2.1 & spring 3.0.5 & hibernate 3.6
+
+com.ppstream.mt.aop 下LogAop实现权限以及异常的拦截
+
+com.ppstream.mt.utils 下 Log4jInitServlet 中设置了webroot变量
+
+在com.ppstream.mt.exception 下定义业务异常
+
+Ehcache Annotations for Spring 缓存策略
+(ehcache中的Terracotta:分布式缓存技术)
