@@ -15,9 +15,12 @@ import javax.persistence.OrderColumn;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+
 
 @Entity
 @Table(name = "privilege_types")
+@Cache(usage=org.hibernate.annotations.CacheConcurrencyStrategy.READ_ONLY)  
 public class PrivilegeType implements Serializable{
 	
 	private static final long serialVersionUID = 1L;

@@ -101,17 +101,16 @@ public class Account extends BaseAction implements ModelDriven<UserLogIn> {
 		maps = userService.setPrivilegeToMap(maps, userPrivileges);
 		
 		// 保存session,使用HttpSession,出现第一次无数据的情况
-		session.put("roleName",StringUtils.removeEndIgnoreCase(roleName.toString(), ","));
-		session.put("ip",ip);
-		session.put("userId", user.getId());
-		session.put("userName", user.getUserName());
-		session.put("nickName", user.getNickName());
-		if (session.get("maps") == null
-				|| (session.get("maps") != null && !maps.equals(session
-						.get("maps")))) {
-			if (session.get("maps") != null)
-				System.out.println("not null");
-			session.put("maps", maps);
+		session.setAttribute("roleName",StringUtils.removeEndIgnoreCase(roleName.toString(), ","));
+		session.setAttribute("ip",ip);
+		session.setAttribute("userId", user.getId());
+		session.setAttribute("userName", user.getUserName());
+		session.setAttribute("nickName", user.getNickName());
+		if (session.getAttribute("maps") == null
+				|| (session.getAttribute("maps") != null && !maps.equals(session
+						.getAttribute("maps")))) {
+			
+			session.setAttribute("maps", maps);
 		}
 		return SUCCESS;
 	}
@@ -119,8 +118,7 @@ public class Account extends BaseAction implements ModelDriven<UserLogIn> {
 	// 退出
 	@Action(value = "logout")
 	public String logout() throws Exception {
-		session.clear();
-		System.out.println("isEmpty ? : " + session.isEmpty());
+		session.invalidate();
 		return LOGIN;
 	}
 }

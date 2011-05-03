@@ -9,10 +9,11 @@
 <title>欢迎使用PPS运维监控系统！ </title>
 </head>
 <body>
-<s:if test="%{#request.privilegeTips == null}">
+<s:if test="%{#request.privilegeTips == null && #request.exceptionTips == null}">
 	欢迎使用PPS运维监控系统！
 </s:if> 
-<s:else> 
+<s:else>
+	<s:property value="#request.exceptionTips"/>  
 	<s:property value="#request.privilegeTips"/> 
 </s:else>
 </body>

@@ -23,7 +23,7 @@ $(document).ready(function(){
 				required: true
 			}
 		},
-		messages: {
+		messages:{
 			userName: {
 				required: "Please enter a login name"
 			},
@@ -40,6 +40,28 @@ $(document).ready(function(){
 </script>
 </head>
 <body>
+<%--
+			roleIds:{
+				required:true,
+				minlength:1
+			},
+			groupLeader:{
+				required:true
+			},
+			groupId:{
+				required:true
+			}
+			
+			groupId:{
+				required:"Please select at least a group for the user you add"
+			}
+			roleIds:{
+				required:"Please select at least one role for the user you add"
+			},
+			groupLeader:{
+				required:"Please choose if the user is a group leader"
+			},
+--%>
 	<div id="body">
 		<h3>添加用户</h3>
 		<div id="main">
@@ -50,14 +72,16 @@ $(document).ready(function(){
 
 					<tr>
 						<td class="form_head">登陆名：</td>
-						<td class="form_field"><input name="userName" id="userName"
-							type="text"></td>
+						<td class="form_field">
+							<input name="userName" id="userName" type="text">
+						</td>
 					</tr>
 					<tr>
 						<td class="form_head">姓名：</td>
 
-						<td class="form_field"><input name="nickName" id="nickName"
-							type="text"></td>
+						<td class="form_field">
+							<input name="nickName" id="nickName" type="text">
+						</td>
 					</tr>
 					<tr>
 						<td class="form_head">角色：</td>
@@ -67,11 +91,15 @@ $(document).ready(function(){
 									value="<s:property value="#role.id"/>" name="roleIds" 
 									id="role_id_<s:property value="#role.id"/>" type="checkbox"><s:property value="#role.roleName"/></label>&nbsp;
 							</s:iterator>
+							<!-- 
+							<label for="roleIds" class="error">Please select at least one role for the user you add.</label>
+							 -->
 						</td>
 					</tr>
 					<tr>
 						<td class="form_head">所属部门：</td>
-						<td class="form_field"><select name="groupId">
+						<td class="form_field">
+						<select name="groupId">
 								<s:iterator value="#request.groups" id="group">
 									<option value="<s:property value="#group.id"/>"><s:property value="#group.groupName"/></option>
 								</s:iterator>
@@ -87,12 +115,15 @@ $(document).ready(function(){
 								
 							<label for="group_leader_1"><input value="1"
 								name="groupLeader" id="group_leader_1" type="radio">是</label>&nbsp;
+								<!-- 
+							<label for="groupLeader" class="error">Please choose if the user is a group leader.</label>
+							 -->
 						</td>
 					</tr>
 					<tr>
 						<td class="form_head">密码：</td>
-						<td class="form_field"><input name="password" id="password"
-							type="password">
+						<td class="form_field">
+							<input name="password" id="password" type="password">
 						</td>
 					</tr>
 

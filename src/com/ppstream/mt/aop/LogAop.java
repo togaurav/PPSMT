@@ -9,9 +9,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
-import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
@@ -44,19 +42,7 @@ public class LogAop {
      */
 	@Pointcut("execution(* com.ppstream.mt.action.PrivilegeAdmin.*(..)) || execution(* com.ppstream.mt.action.RoleAdmin.*(..)) || execution(* com.ppstream.mt.action.UserAdmin.*(..))")
     public void inActionMethod(){} 
-	
-	/** 
-	 * 定义业务方法切入点
-     */
-	@Pointcut("execution(* com.ppstream.mt.service..*.*(..))")
-    public void inServiceMethod(){} 
-	
-	
-	/** 
-	 * 定义总切入点
-     */
-    @Pointcut("inActionMethod() && inServiceMethod()")
-    public void supportAOP(){} 
+
 	
     /** 
      * 切入点执行范围
@@ -67,39 +53,47 @@ public class LogAop {
     public Object doAround(ProceedingJoinPoint pjp) throws Throwable
     {
         Logger log = Logger.getLogger(pjp.getTarget().getClass());
+        // 动作的名称以及时间
         StringBuilder sb = new StringBuilder();
         sb.append("[")
                 .append(pjp.getTarget().getClass().getName())
                 .append(".")
                 .append(pjp.getSignature().getName())
                 .append("]");
-       
-        long begin = System.currentTimeMillis();
+        sb.append("tmpDir:["+System.getProperty("java.io.tmpdir")+"]");
         sb.append("开始时间：[").append(new Date().toString()).append("]");
+        ActionContext ac = ActionContext.getContext();
         // 当前执行的action
         StringBuilder actionSB = new StringBuilder();
         actionSB.append("/default/").append(pjp.getSignature().getName()).append(".action");
         String action = actionSB.toString();
         // 权限集合
-        Map session = ActionContext.getContext().getSession();  
+        Map session = ActionContext.getContext().getSession();
+        if(session.get("userId") == null || 
+        		(session.get("userId") != null && "".equalsIgnoreCase(session.get("userId").toString()))){	// 登录验证
+        	ac.put("loginTips", "请先登录！");      
+        	log.debug("登录拦截： " + sb.toString());
+            return Action.LOGIN;  
+        }
         HashMap<String, HashMap<String, HashSet<GPrivilege>>> maps = (HashMap<String, HashMap<String, HashSet<GPrivilege>>>)session.get("maps");
         // 权限控制
         boolean flag = hasPrivilege(maps,action);
         
         // 方法执行
         Object result = null;
-        if(true){ // flag
-        	result = pjp.proceed(pjp.getArgs());
+        if(true){ // 权限拦截 flag
+        	try{  
+        		result = pjp.proceed(pjp.getArgs());
+        	}catch(Exception ex){  // 全局异常处理
+            	ac.put("exceptionTips", "程序发生异常！");   
+            	log.error(sb.toString() + "Exception : " + ex.getMessage());
+        		return Action.INPUT;
+        	}
         }else{
-        	ActionContext ac = ActionContext.getContext();
-        	ac.put("privilegeTips", "您无此权限，请联系上级主管！");        	
-            return Action.INPUT;   // 返回默认界面
+        	ac.put("privilegeTips", "您无此权限，请联系上级主管！");      
+        	log.debug("权限拦截： " + sb.toString());
+            return Action.INPUT;  
         }
-        long end = System.currentTimeMillis();
-        sb.append("结束时间：[")
-                .append(new Date().toString())
-                .append("]");
-        sb.append("共耗费：[").append((end - begin)).append("ms]");
         log.info(sb.toString());
         return result;
     }
@@ -109,7 +103,6 @@ public class LogAop {
         // 遍历
         Set<String> typeSet = maps.keySet();
         Iterator<String> typeIterator = typeSet.iterator();
-//        System.out.println("action:" + action);
         while(typeIterator.hasNext()){
         	String type = typeIterator.next();
         	HashMap<String, HashSet<GPrivilege>> cateMaps = maps.get(type);
@@ -120,7 +113,6 @@ public class LogAop {
         		Iterator<GPrivilege> gPrivilegeIterator = gPrivilegeSet.iterator();
         		while(gPrivilegeIterator.hasNext()){
         			GPrivilege gPrivilege = gPrivilegeIterator.next();
-//        			System.out.println(gPrivilege.getAction());
         			if(action.equalsIgnoreCase(gPrivilege.getAction())){
         				flag = true;
         			}
@@ -130,16 +122,4 @@ public class LogAop {
         return flag;
     }
     
-    /** 
-     * 切入点抛出异常
-     * @param jp        切入点
-     * @param ex        抛出的异常
-     */
-    @AfterThrowing(pointcut = "supportAOP()", throwing = "ex")
-    public void doThrowing(JoinPoint jp, Throwable ex)
-    {
-    	System.out.println("异常");
-        Logger log = Logger.getLogger(jp.getTarget().getClass());
-        log.error(ex.getMessage(), ex);
-    } 
 }

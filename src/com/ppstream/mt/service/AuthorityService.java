@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.googlecode.ehcache.annotations.Cacheable;
+import com.googlecode.ehcache.annotations.TriggersRemove;
+import com.googlecode.ehcache.annotations.When;
 import com.ppstream.mt.dao.BaseDao;
 import com.ppstream.mt.entity.Privilege;
 import com.ppstream.mt.entity.PrivilegeCate;
@@ -30,6 +33,7 @@ public class AuthorityService {
 	/**
 	 * 取得大分类列表
 	 */
+	@Cacheable(cacheName = "serviceCache")
 	public List<PrivilegeType> getPrivilegeTypeList(){
 		String hql = "from PrivilegeType";
 		List<PrivilegeType> lists = baseDao.findByHql(hql, null);
@@ -39,6 +43,7 @@ public class AuthorityService {
 	/**
 	 * 取得二级权限列表
 	 */
+	@Cacheable(cacheName = "serviceCache")
 	public List<PrivilegeCate> getPrivilegeCateList(){
 		String hql = "from PrivilegeCate as pc left join fetch pc.privileges";
 		List<PrivilegeCate> lists = baseDao.findByHql(hql, null);
@@ -49,6 +54,7 @@ public class AuthorityService {
 	/**
 	 * 根据id取得资源分类记录
 	 */
+	@Cacheable(cacheName = "serviceCache")
 	public PrivilegeCate getPrivilegeCateById(Integer cateId){
 		return baseDao.get(PrivilegeCate.class, cateId);
 	}
@@ -56,6 +62,7 @@ public class AuthorityService {
 	/**
 	 * 根据id取得资源记录
 	 */
+	@Cacheable(cacheName = "serviceCache")
 	public Privilege getPrivilegeById(Integer privilegeId){
 		return baseDao.get(Privilege.class, privilegeId);
 	}
@@ -63,6 +70,7 @@ public class AuthorityService {
 	/**
 	 *  编辑二级权限
 	 */
+	@TriggersRemove(cacheName = "serviceCache", when = When.AFTER_METHOD_INVOCATION, removeAll = true)
 	public void editPrivilegeCate(Integer cateId,Integer typeId,String newCateName,Integer showNav){
 		PrivilegeCate pc = this.getPrivilegeCateById(cateId); 
 		pc.setCateName(newCateName);
@@ -77,6 +85,7 @@ public class AuthorityService {
 	/*
 	 * 新增二级权限
 	 */
+	@TriggersRemove(cacheName = "serviceCache", when = When.AFTER_METHOD_INVOCATION, removeAll = true)
 	public void addPrivilegeCate(Integer typeId,String newCateName,Integer showNav){
 		PrivilegeType pt = baseDao.load(PrivilegeType.class, typeId);
 		PrivilegeCate pc = new PrivilegeCate();
@@ -89,15 +98,18 @@ public class AuthorityService {
 	/**
 	 * 删除二级权限       
 	 */
+	@TriggersRemove(cacheName = "serviceCache", when = When.AFTER_METHOD_INVOCATION, removeAll = true)
 	public void deletePrivilegeCate(Integer cateId){
 		PrivilegeCate pc = this.getPrivilegeCateById(cateId); 
 		PrivilegeType type = pc.getPrivilegeType();
 		type.getPrivilegeCates().remove(pc);  // 删除关联
 		baseDao.delete(pc);
 	}
+	
 	/**
 	 * 修改资源分类的排序
 	 */
+	@TriggersRemove(cacheName = "serviceCache", when = When.AFTER_METHOD_INVOCATION, removeAll = true)
 	public void editPrivilegeCateSortIndex(Integer cateId,Integer sortIndex){
 		PrivilegeCate pc = this.getPrivilegeCateById(cateId); 
 		pc.setSortIndex(sortIndex);
@@ -107,6 +119,7 @@ public class AuthorityService {
 	/**
 	 * 新增一级权限
 	 */
+	@TriggersRemove(cacheName = "serviceCache", when = When.AFTER_METHOD_INVOCATION, removeAll = true)
 	public void addPrivilegeType(String typeName,Integer showNav){
 		PrivilegeType pt = new PrivilegeType();
 		pt.setTypeName(typeName);
@@ -117,6 +130,7 @@ public class AuthorityService {
 	/**
 	 * 新增资源
 	 */
+	@TriggersRemove(cacheName = "serviceCache", when = When.AFTER_METHOD_INVOCATION, removeAll = true)
 	public void addPrivilege(Integer cateId,String name,String action,Integer showNav){
 		PrivilegeCate pc = this.getPrivilegeCateById(cateId); 
 		Privilege privilege = new Privilege();
@@ -130,6 +144,7 @@ public class AuthorityService {
 	/**
 	 * 编辑资源
 	 */
+	@TriggersRemove(cacheName = "serviceCache", when = When.AFTER_METHOD_INVOCATION, removeAll = true)
 	public void editPrivilege(Integer privilegeId,Integer cateId,String name,String action,Integer showNav){
 		Privilege privilege = this.getPrivilegeById(privilegeId);
 		PrivilegeCate pc = this.getPrivilegeCateById(cateId);
@@ -143,6 +158,7 @@ public class AuthorityService {
 	/**
 	 * 修改资源排序
 	 */
+	@TriggersRemove(cacheName = "serviceCache", when = When.AFTER_METHOD_INVOCATION, removeAll = true)
 	public void editPrivilegeSortIndex(Integer privilegeId,Integer sortIndex){
 		Privilege privilege = this.getPrivilegeById(privilegeId); 
 		privilege.setSortIndex(sortIndex);
@@ -153,6 +169,7 @@ public class AuthorityService {
 	/**
 	 * 删除资源
 	 */
+	@TriggersRemove(cacheName = "serviceCache", when = When.AFTER_METHOD_INVOCATION, removeAll = true)
 	public void deletePrivilege(Integer privilegeId){
 		Privilege privilege = this.getPrivilegeById(privilegeId);
 		PrivilegeCate cate = privilege.getPrivilegeCate();
@@ -181,14 +198,17 @@ public class AuthorityService {
 	/**
 	 * 取得角色列表
 	 */
+	@Cacheable(cacheName = "serviceCache")
 	public List<Role> getRoleList(){
 		String hql = "from Role";
 		List<Role> lists = baseDao.findByHql(hql, null);
 		return lists;
 	}
+	
 	/**
 	 * 新增角色
 	 */
+	@TriggersRemove(cacheName = "serviceCache", when = When.AFTER_METHOD_INVOCATION, removeAll = true)
 	public void addRole(String roleName){
 		Role role = new Role();
 		role.setRoleName(roleName);
@@ -198,6 +218,7 @@ public class AuthorityService {
 	/**
 	 * 根据id取得角色记录
 	 */
+	@Cacheable(cacheName = "serviceCache")
 	public Role getRole(Integer roleId){
 		return baseDao.get(Role.class, roleId);
 	}
@@ -205,6 +226,7 @@ public class AuthorityService {
 	/**
 	 * 编辑角色
 	 */
+	@TriggersRemove(cacheName = "serviceCache", when = When.AFTER_METHOD_INVOCATION, removeAll = true)
 	public void editRole(Integer roleId,String roleName){
 		Role role = baseDao.load(Role.class, roleId);
 		role.setRoleName(roleName);
@@ -214,6 +236,7 @@ public class AuthorityService {
 	/**
 	 * 删除角色
 	 */
+	@TriggersRemove(cacheName = "serviceCache", when = When.AFTER_METHOD_INVOCATION, removeAll = true)
 	public void deleteRole(Integer roleId){
 		Role role = baseDao.load(Role.class, roleId);
 		baseDao.delete(role);
@@ -222,6 +245,7 @@ public class AuthorityService {
 	/**
 	 * 根据角色id取得拥有权限
 	 */
+	@Cacheable(cacheName = "serviceCache")
 	public Set<Privilege> getPrivilegesByRoleId(Integer roleId){
 		Role role = baseDao.load(Role.class, roleId);
 		return role.getPrivileges();
@@ -230,6 +254,7 @@ public class AuthorityService {
 	/**
 	 * 根据角色id取得拥有权限id集合
 	 */
+	@Cacheable(cacheName = "serviceCache")
 	public Set<Integer> getPrivilegeIdsByRoleId(Integer roleId){
 		Set<Integer> privilegeIds = new HashSet<Integer>();
 		Set<Privilege> privileges = getPrivilegesByRoleId(roleId);
@@ -245,6 +270,7 @@ public class AuthorityService {
 	 * 设置角色权限
 	 * -------------------- [增:需要事务控制]
 	 */
+	@TriggersRemove(cacheName = "serviceCache", when = When.AFTER_METHOD_INVOCATION, removeAll = true)
 	public void configRolePrivilege(Integer roleId,String privilegeIds){
 		Role role = baseDao.get(Role.class, roleId);
 		// 全移除

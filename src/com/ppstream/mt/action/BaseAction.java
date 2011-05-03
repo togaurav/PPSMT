@@ -1,9 +1,8 @@
 package com.ppstream.mt.action;
 
-import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.ExceptionMapping;
@@ -15,7 +14,6 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.springframework.context.annotation.Scope;
 
 import com.opensymphony.xwork2.Action;
-import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
 
@@ -33,19 +31,20 @@ public class BaseAction extends ActionSupport implements Preparable,ServletReque
 	public BaseAction() { }
 	
 	HttpServletRequest request;
-    Map session;
+    HttpSession session;
     HttpServletResponse response;
 
     public void setServletRequest(HttpServletRequest arg0) {
         this.request = arg0;
-        this.session = ActionContext.getContext().getSession();  
+        this.session = this.request.getSession();
+//        this.session = ActionContext.getContext().getSession();  
     }
 
     public HttpServletRequest getRequest() {
         return request;
     }
 
-    public Map getSession() {
+    public HttpSession getSession() {
         return session;
     }
     

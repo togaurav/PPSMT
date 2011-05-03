@@ -4,7 +4,8 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<script type="text/javascript" src="http://code.jquery.com/jquery-1.4.4.min.js"></script>
+<script type="text/javascript"
+	src="http://code.jquery.com/jquery-1.4.4.min.js"></script>
 <title>资源列表</title>
 <link rel="stylesheet" type="text/css"
 	href="${pageContext.request.contextPath}/css/admin.css">
@@ -104,7 +105,7 @@ jQuery(function($){
 			<input value="添加资源" onclick="location.href='${pageContext.request.contextPath}/default/addPrivilegeView.action?cateId=<s:property value="#cate.id" />'" type="button">
 			<input style="width: 30px;" value="<s:property value="#cate.sortIndex" />" type="text"> 
 			<input value="修改排序"  onclick="pcsort(<s:property value="#cate.id" />,this)"  type="button">  
-			<span id="pc_img_361" style="display: none;"><img src="/images/loading.gif"></span>
+			<span id="pc_img_361" style="display: none;"><img src="${pageContext.request.contextPath}/images/loading.gif"></span>
 		</td>
 	</tr>
 
@@ -120,7 +121,7 @@ jQuery(function($){
 					type="button" />
 				<input style="width: 30px;" value="<s:property value="#privilege.sortIndex" />" type="text" /> 
 				<input value="修改排序" onclick="psort(<s:property value="#privilege.id" />,this)" type="button">
-				<span id="p_img_1100" style="display: none;"><img src="/themes/images/loading.gif"></span>
+				<span id="p_img_1100" style="display: none;"><img src="${pageContext.request.contextPath}/images/loading.gif"></span>
 			</td>
 		</tr>
 	</s:iterator>

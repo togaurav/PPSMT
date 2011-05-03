@@ -17,11 +17,13 @@ import javax.persistence.OrderColumn;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
 @Entity
 @Table(name = "privilege_cates")
+@Cache(usage=org.hibernate.annotations.CacheConcurrencyStrategy.READ_ONLY)  
 public class PrivilegeCate implements Serializable{
 	
 	private static final long serialVersionUID = 1L;

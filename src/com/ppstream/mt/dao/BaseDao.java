@@ -21,11 +21,15 @@ public interface BaseDao {
 	
 	public <T> T get(Class<T> entity, Serializable id);
 
-	public <T> List<T> findBySql(final String sql, final Class<T> entityType,final Object... args);
+	public <T> List<T> findByNativeSql(final String sql, final Class<T> entityType,final Object... args);
 	
 	public <T> List<T> findByHql(final String hql, final Object... args);
 	
 	public <T> TbData runNativeSql(final Class<T>[] entityClz,
 			final int pageSize, final int pageNo, final String sql,
 			final Object... args);
+	
+	public int getRows(String hql);
+	
+	public TbData runHQL(final int totalCount,final int pageSize, final int pageNo, final String hql,final Object... args);
 }

@@ -71,11 +71,12 @@ public class BaseDaoImpl extends HibernateDaoSupport implements BaseDao{
 		return (T) getHibernateTemplate().get(entity, id);
 	}
 	
-	
+	/**
+	 ****************************************************************************** 基于NativeSQL 或 HQL 的非分页查询*********/
 	@SuppressWarnings("unchecked")
 	@Override
 	@Transactional(readOnly = true)
-	public <T> List<T> findBySql(final String sql, final Class<T> entityType,
+	public <T> List<T> findByNativeSql(final String sql, final Class<T> entityType,
 			final Object... args) {
 		return (List<T>) getHibernateTemplate().executeWithNativeSession(
 				new HibernateCallback() {
@@ -83,7 +84,7 @@ public class BaseDaoImpl extends HibernateDaoSupport implements BaseDao{
 					public Object doInHibernate(Session session)
 							throws HibernateException, SQLException {
 						SQLQuery q = session.createSQLQuery(sql).addEntity(entityType);
-//						q.setCacheable(true);
+						q.setCacheable(true);
 						if (args != null) {
 							for (int i = 0; i < args.length; i++) {
 								q.setParameter(i, args[i]);
@@ -104,7 +105,7 @@ public class BaseDaoImpl extends HibernateDaoSupport implements BaseDao{
 					public Object doInHibernate(Session session)
 							throws HibernateException, SQLException {
 						Query q = session.createQuery(hql);
-//						q.setCacheable(true);
+						q.setCacheable(true);
 						if (args != null) {
 							for (int i = 0; i < args.length; i++) {
 								q.setParameter(i, args[i]);
@@ -117,7 +118,7 @@ public class BaseDaoImpl extends HibernateDaoSupport implements BaseDao{
 	
 	
 	/**
-	 ****************************************************************************** 基于SQL分页查询*********/
+	 ****************************************************************************** 基于NativeSQL分页查询*********/
 	
 	private final static Pattern PTN_ORDERBY = Pattern.compile("order\\s+by");
 
@@ -243,10 +244,14 @@ public class BaseDaoImpl extends HibernateDaoSupport implements BaseDao{
 	
 	/**
 	 ****************************************************************************** 基于HQL分页查询*********/
+	@Override
 	public int getRows(String hql){  
-        return getHibernateTemplate().find(hql).size();  
+		int size = getHibernateTemplate().find(hql).size();
+        return size;  
     }
 	
+	@Override
+	@Transactional(readOnly = true)
 	public TbData runHQL(final int totalCount,final int pageSize, final int pageNo, final String hql,final Object... args){
 		Object result = getHibernateTemplate().executeWithNativeSession(
 				new HibernateCallback() {

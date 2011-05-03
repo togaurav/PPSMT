@@ -17,15 +17,17 @@ import com.ppstream.mt.entity.Role;
 import com.ppstream.mt.entity.User;
 import com.ppstream.mt.service.AuthorityService;
 import com.ppstream.mt.service.UserService;
+import com.ppstream.mt.utils.pager.PgInfo;
+import com.ppstream.mt.utils.pager.TbData;
 
-@Component("userAdmin") 
-public class UserAdmin extends BaseAction  {
-	
-private static final long serialVersionUID = 1L;
-	
+@Component("userAdmin")
+public class UserAdmin extends BaseAction {
+
+	private static final long serialVersionUID = 1L;
+
 	private UserService userService;
 	private AuthorityService authorityService;
-	
+
 	private Integer userId;
 	private String userName;
 	private String password;
@@ -36,159 +38,184 @@ private static final long serialVersionUID = 1L;
 	private String nickName;
 	private String subPhone;
 	private String privilegeIds;
-	
+
+	private final static int pageSize = 30;
+	private Integer totalPages;
+	private Integer currentPage;
+
+	public Integer getTotalPages() {
+		return totalPages;
+	}
+
+	public void setTotalPages(Integer totalPages) {
+		this.totalPages = totalPages;
+	}
+
+	public Integer getCurrentPage() {
+		return currentPage;
+	}
+
+	public void setCurrentPage(Integer currentPage) {
+		this.currentPage = currentPage;
+	}
+
 	public String getPrivilegeIds() {
 		return privilegeIds;
 	}
+
 	public void setPrivilegeIds(String privilegeIds) {
 		this.privilegeIds = privilegeIds;
 	}
+
 	public String getUserName() {
 		return userName;
 	}
+
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
+
 	public String getPassword() {
 		return password;
 	}
+
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
 	public String getEmail() {
 		return email;
 	}
+
 	public void setEmail(String email) {
 		this.email = email;
 	}
+
 	public String getRoleIds() {
 		return roleIds;
 	}
+
 	public void setRoleIds(String roleIds) {
 		this.roleIds = roleIds;
 	}
+
 	public Integer getGroupLeader() {
 		return groupLeader;
 	}
+
 	public void setGroupLeader(Integer groupLeader) {
 		this.groupLeader = groupLeader;
 	}
+
 	public Integer getGroupId() {
 		return groupId;
 	}
+
 	public void setGroupId(Integer groupId) {
 		this.groupId = groupId;
 	}
+
 	public String getNickName() {
 		return nickName;
 	}
+
 	public void setNickName(String nickName) {
 		this.nickName = nickName;
 	}
+
 	public String getSubPhone() {
 		return subPhone;
 	}
+
 	public void setSubPhone(String subPhone) {
 		this.subPhone = subPhone;
 	}
+
 	public Integer getUserId() {
 		return userId;
 	}
+
 	public void setUserId(Integer userId) {
 		this.userId = userId;
 	}
-	
+
 	public AuthorityService getAuthorityService() {
 		return authorityService;
 	}
-	@Resource  
+
+	@Resource
 	public void setAuthorityService(AuthorityService authorityService) {
 		this.authorityService = authorityService;
 	}
+
 	public UserService getUserService() {
 		return userService;
 	}
-	@Resource  
+
+	@Resource
 	public void setUserService(UserService userService) {
 		this.userService = userService;
 	}
-	
+
 	// 员工列表
-	@Action(value="userList",
-		results={
-			@Result(name="success", location="/authority/userList.jsp" ) 
-        }
-	)
-	public String userList() throws Exception { 
-		List<User> users = userService.getUserList();
-		request.setAttribute("users", users);
-		return SUCCESS;
+	@Action(value = "userList", results = { @Result(name = "success", location = "/authority/userList.jsp") })
+	public String userList() throws Exception {
+		if(currentPage == null){
+		   currentPage = 1;
+		}
+	    TbData tbData = userService.getUserList(currentPage,pageSize);
+	    @SuppressWarnings("unchecked")
+	    List<User> users = tbData.getList();
+	    PgInfo pgInfo = tbData.getPageInfo();
+	    request.setAttribute("users", users);
+	    request.setAttribute("pginfo",pgInfo);
+	    return SUCCESS;
 	}
 
 	// 停用账户
-	@Action(value="changeUserStatusToStop",
-		results={
-			@Result(name="success", type="redirectAction",location = "userList.action" ) 
-        }
-	)
-	public String changeUserStatusToStop() throws Exception{
-		userService.changeUserStatus(userId,2);
+	@Action(value = "changeUserStatusToStop", results = { @Result(name = "success", type = "redirectAction", location = "userList.action") })
+	public String changeUserStatusToStop() throws Exception {
+		userService.changeUserStatus(userId, 2);
 		return SUCCESS;
 	}
-	
+
 	// 启用账户
-	@Action(value="changeUserStatusToUse",
-		results={
-			@Result(name="success", type="redirectAction",location = "userList.action" ) 
-        }
-	)
-	public String changeUserStatusToUse() throws Exception{
-		userService.changeUserStatus(userId,1);
+	@Action(value = "changeUserStatusToUse", results = { @Result(name = "success", type = "redirectAction", location = "userList.action") })
+	public String changeUserStatusToUse() throws Exception {
+		userService.changeUserStatus(userId, 1);
 		return SUCCESS;
 	}
-	
-	
+
 	// 增加用户的页面
-	@Action(value="addUserView",
-		results={
-			@Result(name="success", location="/authority/addUser.jsp"  ) 
-        }
-	)
-	public String addUserView() throws Exception{
+	@Action(value = "addUserView", results = { @Result(name = "success", location = "/authority/addUser.jsp") })
+	public String addUserView() throws Exception {
 		List<Role> roles = authorityService.getRoleList();
 		List<Group> groups = userService.getGroupList();
 		request.setAttribute("roles", roles);
 		request.setAttribute("groups", groups);
 		return SUCCESS;
 	}
-	
+
 	// 增加用户
-	@Action(value="addUser",
-		results={
-			@Result(name="success", type="redirectAction",location = "userList.action"  ) 
-        }
-	)
-	public String addUser() throws Exception{
+	@Action(value = "addUser", results = { @Result(name = "success", type = "redirectAction", location = "userList.action") })
+	public String addUser() throws Exception {
 		// 校验,userName应该可以重复，因为有Key [两个汪洋]
-		
+
 		// 保存
-		userService.addOrUpdateUser(null,userName,password,email,roleIds,groupLeader,groupId,nickName,subPhone);
+		userService.addOrUpdateUser(null, userName, password, email, roleIds,
+				groupLeader, groupId, nickName, subPhone);
 		return SUCCESS;
 	}
-	
+
 	// 编辑用户页面
-	@Action(value="editUserView",
-		results={
-			@Result(name="success", location="/authority/editUser.jsp"  ) 
-        }
-	)
-	public String editUserView() throws Exception{
+	@Action(value = "editUserView", results = { @Result(name = "success", location = "/authority/editUser.jsp") })
+	public String editUserView() throws Exception {
 		// userId查出user记录
 		User user = userService.getUserById(userId);
 		Set<Role> userRoles = user.getRoles();
 		Set<Integer> roleIds = new HashSet<Integer>();
 		Iterator<Role> userRolesIterator = userRoles.iterator();
-		while(userRolesIterator.hasNext()){
+		while (userRolesIterator.hasNext()) {
 			Role role = userRolesIterator.next();
 			roleIds.add(role.getId());
 		}
@@ -200,42 +227,31 @@ private static final long serialVersionUID = 1L;
 		request.setAttribute("groups", groups);
 		return SUCCESS;
 	}
-	
+
 	// 编辑用户
-	@Action(value="editUser",
-		results={
-			@Result(name="success", type="redirectAction",location = "userList.action"  ) 
-        }
-	)
-	public String editUser() throws Exception{
-		userService.addOrUpdateUser(userId,userName,password,email,roleIds,groupLeader,groupId,nickName,subPhone);
+	@Action(value = "editUser", results = { @Result(name = "success", type = "redirectAction", location = "userList.action") })
+	public String editUser() throws Exception {
+		userService.addOrUpdateUser(userId, userName, password, email, roleIds,
+				groupLeader, groupId, nickName, subPhone);
 		return SUCCESS;
 	}
-	
-	
+
 	// 设置用户权限页面
-	@Action(value="assignPrivilegeToUserView",
-		results={
-			@Result(name="success", location="/authority/assignPrivilegeToUserView.jsp" )  
-        }
-	)
-	public String assignPrivilegeToUserView() throws Exception{
+	@Action(value = "assignPrivilegeToUserView", results = { @Result(name = "success", location = "/authority/assignPrivilegeToUserView.jsp") })
+	public String assignPrivilegeToUserView() throws Exception {
 		Set<Integer> privilegeIds = userService.getPrivilegeIdsByUserId(userId);
-		List<PrivilegeCate> privilegeCates = authorityService.getPrivilegeCateList();
+		List<PrivilegeCate> privilegeCates = authorityService
+				.getPrivilegeCateList();
 		request.setAttribute("privilegeCates", privilegeCates);
 		request.setAttribute("privilegeIds", privilegeIds);
 		return SUCCESS;
 	}
-	
+
 	// 设置用户权限
-	@Action(value="assignPrivilegeToUser",
-		results={
-			@Result(name="success", type="redirectAction",location = "userList.action")  
-        }
-	)
-	public String assignPrivilegeToUser() throws Exception{
-		userService.configRolePrivilege(userId,privilegeIds);
+	@Action(value = "assignPrivilegeToUser", results = { @Result(name = "success", type = "redirectAction", location = "userList.action") })
+	public String assignPrivilegeToUser() throws Exception {
+		userService.configRolePrivilege(userId, privilegeIds);
 		return SUCCESS;
 	}
-	
+
 }

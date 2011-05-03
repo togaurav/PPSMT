@@ -37,9 +37,11 @@
         <property name="packagesToScan" value="com.ppstream.mt.entity"/>                        <!-- 此处hibernate实体包  -->
         <property name="hibernateProperties">
         	<props>  
-                <!--<prop key="hibernate.format_sql">true</prop>  
+                <!--
+                <prop key="hibernate.format_sql">true</prop>  
                 <prop key="hibernate.hbm2ddl.auto">auto</prop> 
-                <prop key="hibernate.show_sql">true</prop>   -->  
+                <prop key="hibernate.show_sql">true</prop>   
+                -->  
                 <prop key="hibernate.dialect">${hibernate.dialect}</prop>  
                 <!--指定Proxool的alias，必须与Proxool的配置文件中的alias一致-->      
                 <prop key="hibernate.proxool.pool_alias">datasource</prop>    
@@ -48,6 +50,12 @@
                 <prop key="hibernate.connection.provider_class">    
                     org.hibernate.connection.ProxoolConnectionProvider    
                 </prop>   
+                
+				<prop key="hibernate.cache.use_second_level_cache">true</prop>  
+				<prop key="hibernate.cache.configurationResourceName">/WEB-INF/ehcache.xml</prop>  
+				<prop key="hibernate.cache.use_query_cache">true</prop>  
+				<prop key="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</prop>  
+
             </props>  
         </property>
        	<property name="eventListeners">  
@@ -66,18 +74,5 @@
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     <tx:annotation-driven transaction-manager="txManager" proxy-target-class="true"/>
-    <!-- 
-     <tx:advice id="txAdvice" transaction-manager="transactionManager">  
-        <tx:attributes>  
-            <tx:method name="get*" read-only="true"/>  
-            <tx:method name="add*" propagation="REQUIRED"/>  
-            <tx:method name="edit*" propagation="REQUIRED"/>  
-        </tx:attributes>  
-     </tx:advice>  
-     <aop:config>  
-        <aop:pointcut expression="execution(public * com.ppstream.mt.service..*.*(..))" id="myPointcut"/>  
-        <aop:advisor advice-ref="txAdvice" pointcut-ref="myPointcut"/>  
-     </aop:config>  
-     -->
 	
 </beans>
