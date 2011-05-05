@@ -15,11 +15,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Cache;
-
 @Entity
 @Table(name = "roles")
-@Cache(usage=org.hibernate.annotations.CacheConcurrencyStrategy.READ_ONLY)  
+//@Cache(usage = CacheConcurrencyStrategy.READ_WRITE) 
 public class Role implements Serializable{
 
 	private static final long serialVersionUID = 1L;

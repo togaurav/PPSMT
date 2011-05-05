@@ -6,13 +6,15 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import net.sf.ehcache.Cache;
+import net.sf.ehcache.CacheManager;
+import net.sf.ehcache.config.CacheConfiguration;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.googlecode.ehcache.annotations.Cacheable;
-import com.googlecode.ehcache.annotations.TriggersRemove;
-import com.googlecode.ehcache.annotations.When;
 import com.ppstream.mt.bean.GPrivilege;
 import com.ppstream.mt.dao.BaseDao;
 import com.ppstream.mt.entity.Group;
@@ -25,60 +27,90 @@ import com.ppstream.mt.utils.Codec;
 import com.ppstream.mt.utils.pager.TbData;
 
 @Service("userService")
-@Transactional
 public class UserService {
 
 	@Autowired
 	private BaseDao baseDao;
+	
+	static {
+		CacheManager singletonManager = CacheManager.create();
+		//最多存1000个Element,达到maxInMemory后不缓存到磁盘,timeToLiveSeconds,120秒存活时间; timeToIdleSeconds,120秒不访问该缓存,则清除
+		Cache memoryOnlyCache = new Cache(new CacheConfiguration("userService", 1000).overflowToDisk(false).transactionalMode(CacheConfiguration.TransactionalMode.OFF));
+		singletonManager.addCache(memoryOnlyCache);
+	}  
 
-	@Cacheable(cacheName = "serviceCache")
+	@Transactional(propagation = Propagation.NOT_SUPPORTED)
 	public User getUserByNameAndPwd(String username, String password) {
 		String hql = "from User as user left join fetch user.roles where user.userName = ? and user.password = ? and user.status = ?"; // 在启用账户中查找
 		List<User> users = baseDao.findByHql(hql, username,Codec.hexMD5(password),1);
 		return (users.size() == 0) ? null : users.get(0); // 如果size() > 1,throw new Exception();
 	}
 	
-	@Cacheable(cacheName = "serviceCache")
+	/**
+	 * 根绝roleId取得资源列表
+	 */
+	@Transactional(propagation = Propagation.NOT_SUPPORTED)
 	public Set<Privilege> getPrivilegeByRoleId(Integer roleId){
 		String hql = "from Role as role left join fetch role.privileges where role.id = ?";
 		List<Role> roles = baseDao.findByHql(hql, roleId);
 		return roles.get(0).getPrivileges();
 	}
-	@Cacheable(cacheName = "serviceCache")
+	
+	/**
+	 * 根绝userId取得资源列表
+	 */
+	@Transactional(propagation = Propagation.NOT_SUPPORTED)
 	public Set<Privilege> getPrivilegeByUserId(Integer userId){
 		String hql = "from User as user left join fetch user.privileges where user.id = ?";
 		List<User> users = baseDao.findByHql(hql, userId);
 		return users.get(0).getPrivileges();
 	}
 
-	@Cacheable(cacheName = "serviceCache")
+	/**
+	 * 分页查询用户列表
+	 */
+	@Transactional(propagation = Propagation.NOT_SUPPORTED)
 	public TbData getUserList(Integer currentPage,Integer pageSize) {
 		String hql = "select distinct user from User as user left join fetch user.roles";
 		int totalSize = baseDao.getRows(hql);
 	    TbData tbData = baseDao.runHQL(totalSize, pageSize, currentPage, hql, null);
 		return tbData;
 	}
-	@Cacheable(cacheName = "serviceCache")
+	
+	/**
+	 * 取得部门集合
+	 */
+	@Transactional(propagation = Propagation.NOT_SUPPORTED)
 	public List<Group> getGroupList() {
 		String hql = "from Group";
 		List<Group> groups = baseDao.findByHql(hql, null);
 		return groups;
 	}
 	
-	@TriggersRemove(cacheName = "serviceCache", when = When.AFTER_METHOD_INVOCATION, removeAll = true)
+	/**
+	 * 改变用户状态
+	 */
+	@Transactional(propagation = Propagation.REQUIRED)
 	public void changeUserStatus(Integer userId, Integer status) {
 		User user = baseDao.get(User.class, userId);
 		user.setStatus(status);
 		baseDao.update(user);
 	}
-	@Cacheable(cacheName = "serviceCache")
+	
+	/**
+	 * 根据userId取得用户记录
+	 */
+	@Transactional(propagation = Propagation.NOT_SUPPORTED)
 	public User getUserById(Integer userId) {
 		String hql = "from User as user left join fetch user.roles where user.id = ?";
 		List<User> users = baseDao.findByHql(hql, userId);
 		return users.get(0);
 	}
 	
-	@TriggersRemove(cacheName = "serviceCache", when = When.AFTER_METHOD_INVOCATION, removeAll = true)
+	/**
+	 * 新增或编辑用户记录 
+	 */
+	@Transactional(propagation = Propagation.REQUIRED)
 	public void addOrUpdateUser(Integer userId, String userName,
 			String password, String email, String roleIds, Integer groupLeader,
 			Integer groupId, String nickName, String subPhone) {
@@ -114,7 +146,8 @@ public class UserService {
 		user.setIsCompany(0);
 		baseDao.saveOrUpdate(user);
 	}
-	@Cacheable(cacheName = "serviceCache")
+	
+	
 	public Set<Integer> getPrivilegeIdsByUserId(Integer userId) {
 		Set<Integer> privilegeIds = new HashSet<Integer>();
 		// 用户关联出权限
@@ -140,8 +173,11 @@ public class UserService {
 		return privilegeIds;
 	}
 
-	@TriggersRemove(cacheName = "serviceCache", when = When.AFTER_METHOD_INVOCATION, removeAll = true)
-	public void configRolePrivilege(Integer userId, String privilegeIds) {
+	/**
+	 * 为用户赋予权限
+	 */
+	@Transactional(propagation = Propagation.REQUIRED)
+	public void configUserPrivilege(Integer userId, String privilegeIds) {
 		User user = baseDao.get(User.class, userId);
 		// 移除
 		user.getPrivileges().removeAll(user.getPrivileges());

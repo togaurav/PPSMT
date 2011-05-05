@@ -17,13 +17,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.ppstream.mt.utils.pager.PgInfo;
 import com.ppstream.mt.utils.pager.SqlRow;
 import com.ppstream.mt.utils.pager.TbData;
 
-@Transactional()
 @Repository("baseDao")
 public class BaseDaoImpl extends HibernateDaoSupport implements BaseDao{
 
@@ -59,14 +57,12 @@ public class BaseDaoImpl extends HibernateDaoSupport implements BaseDao{
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	@Transactional(readOnly = true)
 	public <T> T load(Class<T> entity, Serializable id) {
 		return (T) getHibernateTemplate().load(entity, id);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	@Transactional(readOnly = true)
 	public <T> T get(Class<T> entity, Serializable id) {
 		return (T) getHibernateTemplate().get(entity, id);
 	}
@@ -75,7 +71,6 @@ public class BaseDaoImpl extends HibernateDaoSupport implements BaseDao{
 	 ****************************************************************************** 基于NativeSQL 或 HQL 的非分页查询*********/
 	@SuppressWarnings("unchecked")
 	@Override
-	@Transactional(readOnly = true)
 	public <T> List<T> findByNativeSql(final String sql, final Class<T> entityType,
 			final Object... args) {
 		return (List<T>) getHibernateTemplate().executeWithNativeSession(
@@ -84,7 +79,7 @@ public class BaseDaoImpl extends HibernateDaoSupport implements BaseDao{
 					public Object doInHibernate(Session session)
 							throws HibernateException, SQLException {
 						SQLQuery q = session.createSQLQuery(sql).addEntity(entityType);
-						q.setCacheable(true);
+//						q.setCacheable(true);
 						if (args != null) {
 							for (int i = 0; i < args.length; i++) {
 								q.setParameter(i, args[i]);
@@ -97,7 +92,6 @@ public class BaseDaoImpl extends HibernateDaoSupport implements BaseDao{
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	@Transactional(readOnly = true)
 	public <T> List<T> findByHql(final String hql, final Object... args) {
 		return (List<T>) getHibernateTemplate().executeWithNativeSession(
 				new HibernateCallback() {
@@ -105,7 +99,7 @@ public class BaseDaoImpl extends HibernateDaoSupport implements BaseDao{
 					public Object doInHibernate(Session session)
 							throws HibernateException, SQLException {
 						Query q = session.createQuery(hql);
-						q.setCacheable(true);
+//						q.setCacheable(true);
 						if (args != null) {
 							for (int i = 0; i < args.length; i++) {
 								q.setParameter(i, args[i]);
@@ -158,7 +152,6 @@ public class BaseDaoImpl extends HibernateDaoSupport implements BaseDao{
 	}
 	
 	@Override
-	@Transactional(readOnly = true)
 	public <T> TbData runNativeSql(final Class<T>[] entityClz,
 			final int pageSize, final int pageNo, final String sql,
 			final Object... args) {
@@ -251,7 +244,6 @@ public class BaseDaoImpl extends HibernateDaoSupport implements BaseDao{
     }
 	
 	@Override
-	@Transactional(readOnly = true)
 	public TbData runHQL(final int totalCount,final int pageSize, final int pageNo, final String hql,final Object... args){
 		Object result = getHibernateTemplate().executeWithNativeSession(
 				new HibernateCallback() {

@@ -1,0 +1,44 @@
+<project name="PPSMT" default="dist" basedir=".">
+	<!-- Path used for compiling. -->
+	<path id="compileLib">
+		<fileset dir="lib" />
+	</path>
+
+	<!-- prepare directories for build -->
+	<target name="prepare" >
+		<!-- Create the time stamp -->
+		<tstamp/>
+		<mkdir dir="build" />
+        <mkdir dir="build/classes" />
+		<mkdir dir="build/lib" />
+		<mkdir dir="dist" />
+	</target>
+
+	<target name="compile" depends="prepare" description="Compile the Java into classes.">
+		<javac srcdir="src" destdir="build/classes" deprecation="true" debug="on">
+			<classpath refid="compileLib" />
+			<excludesfile ></excludesfile>
+		</javac>
+		
+		<copy todir="build">
+			<fileset dir="WebContent">		
+               <include name="**"/> 
+            </fileset>		
+		</copy>
+		
+        <copy todir="build/lib">
+            <fileset dir="WebContent/WEB-INF/lib">
+              <include name="*.jar"/>
+            </fileset>
+        </copy> 
+	</target>	
+
+	<target name="clean" description="Remove derived files.">
+		<delete dir="build" />
+		<delete dir="dist"/>
+	</target>
+	
+	<target name="dist" depends="compile" description="generate the distribution" >
+		<jar jarfile="dist/PPSMT-${DSTAMP}.jar" basedir="build"/>
+	</target>
+</project>

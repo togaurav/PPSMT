@@ -5,10 +5,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Set;
 
+import javax.servlet.http.HttpSession;
+
 import org.apache.log4j.Logger;
+import org.apache.struts2.ServletActionContext;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -60,29 +62,36 @@ public class LogAop {
                 .append(".")
                 .append(pjp.getSignature().getName())
                 .append("]");
-        sb.append("tmpDir:["+System.getProperty("java.io.tmpdir")+"]");
-        sb.append("开始时间：[").append(new Date().toString()).append("]");
         ActionContext ac = ActionContext.getContext();
         // 当前执行的action
         StringBuilder actionSB = new StringBuilder();
         actionSB.append("/default/").append(pjp.getSignature().getName()).append(".action");
         String action = actionSB.toString();
-        // 权限集合
-        Map session = ActionContext.getContext().getSession();
-        if(session.get("userId") == null || 
-        		(session.get("userId") != null && "".equalsIgnoreCase(session.get("userId").toString()))){	// 登录验证
+      
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        // 登录验证 (默认30分钟,session清空)
+        if(session.getAttribute("userId") == null || 
+        		(session.getAttribute("userId") != null && "".equalsIgnoreCase(session.getAttribute("userId").toString()))){	
         	ac.put("loginTips", "请先登录！");      
         	log.debug("登录拦截： " + sb.toString());
             return Action.LOGIN;  
         }
-        HashMap<String, HashMap<String, HashSet<GPrivilege>>> maps = (HashMap<String, HashMap<String, HashSet<GPrivilege>>>)session.get("maps");
-        // 权限控制
+        // 最后请求时间超过20分钟,重新登录
+        long lastAccessTime = session.getLastAccessedTime(); // 会话时间内web容器接收到客户最后发出的请求的时间
+        long nowTime = new Date().getTime();
+        long seconds = (nowTime - lastAccessTime) / 1000;
+        if(seconds >= 1200){   
+        	ac.put("loginTips", "您已很长时间未操作本系统，请重新登录！");      
+        	log.debug("20分钟内未进行操作,拦截： " + sb.toString());
+            return Action.LOGIN;  
+        }
+        // 权限集合
+        HashMap<String, HashMap<String, HashSet<GPrivilege>>> maps = (HashMap<String, HashMap<String, HashSet<GPrivilege>>>)session.getAttribute("maps");
         boolean flag = hasPrivilege(maps,action);
-        
-        // 方法执行
         Object result = null;
         if(true){ // 权限拦截 flag
         	try{  
+        		// 方法执行
         		result = pjp.proceed(pjp.getArgs());
         	}catch(Exception ex){  // 全局异常处理
             	ac.put("exceptionTips", "程序发生异常！");   

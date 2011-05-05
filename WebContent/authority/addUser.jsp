@@ -69,7 +69,7 @@ $(document).ready(function(){
 				action="${pageContext.request.contextPath}/default/addUser.action"
 				method="post">
 				<table>
-
+					<input type="hidden" name="repeatForm" value="<s:property value="#session.repeatForm"/>" />
 					<tr>
 						<td class="form_head">登陆名：</td>
 						<td class="form_field">

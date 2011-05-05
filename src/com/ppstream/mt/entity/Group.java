@@ -13,12 +13,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
 @Entity
 @Table(name = "groups")
-@Cache(usage=org.hibernate.annotations.CacheConcurrencyStrategy.READ_ONLY)  
+//@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Group implements Serializable{
 
 	private static final long serialVersionUID = 1L;
@@ -33,7 +30,7 @@ public class Group implements Serializable{
 	private String groupName;
 	
 	@OneToMany(mappedBy="group",cascade=CascadeType.ALL)
-	@Cache(usage=CacheConcurrencyStrategy.READ_WRITE,include="non-lazy")  
+//	@Cache(usage=CacheConcurrencyStrategy.READ_WRITE,include="non-lazy")  
 	private Set<User> users;
 
 	public Integer getId() {

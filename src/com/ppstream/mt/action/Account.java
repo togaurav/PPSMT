@@ -11,7 +11,7 @@ import javax.annotation.Resource;
 import org.apache.commons.lang.xwork.StringUtils;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Result;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ModelDriven;
@@ -22,7 +22,7 @@ import com.ppstream.mt.entity.User;
 import com.ppstream.mt.formmodel.UserLogIn;
 import com.ppstream.mt.service.UserService;
 
-@Component("account")
+@Controller("account")
 public class Account extends BaseAction implements ModelDriven<UserLogIn> {
 
 	private static final long serialVersionUID = 1L;
@@ -107,9 +107,7 @@ public class Account extends BaseAction implements ModelDriven<UserLogIn> {
 		session.setAttribute("userName", user.getUserName());
 		session.setAttribute("nickName", user.getNickName());
 		if (session.getAttribute("maps") == null
-				|| (session.getAttribute("maps") != null && !maps.equals(session
-						.getAttribute("maps")))) {
-			
+				|| (session.getAttribute("maps") != null && !maps.equals(session.getAttribute("maps")))) {
 			session.setAttribute("maps", maps);
 		}
 		return SUCCESS;

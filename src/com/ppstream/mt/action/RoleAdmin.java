@@ -7,13 +7,13 @@ import javax.annotation.Resource;
 
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Result;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 
 import com.ppstream.mt.entity.PrivilegeCate;
 import com.ppstream.mt.entity.Role;
 import com.ppstream.mt.service.AuthorityService;
 
-@Component("roleAdmin") 
+@Controller("roleAdmin") 
 public class RoleAdmin extends BaseAction{
 
 	private static final long serialVersionUID = 1L;

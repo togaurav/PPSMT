@@ -9,7 +9,7 @@ import javax.annotation.Resource;
 
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Result;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 
 import com.ppstream.mt.entity.Group;
 import com.ppstream.mt.entity.PrivilegeCate;
@@ -20,7 +20,7 @@ import com.ppstream.mt.service.UserService;
 import com.ppstream.mt.utils.pager.PgInfo;
 import com.ppstream.mt.utils.pager.TbData;
 
-@Component("userAdmin")
+@Controller("userAdmin")
 public class UserAdmin extends BaseAction {
 
 	private static final long serialVersionUID = 1L;
@@ -42,6 +42,16 @@ public class UserAdmin extends BaseAction {
 	private final static int pageSize = 30;
 	private Integer totalPages;
 	private Integer currentPage;
+	
+	private String repeatForm;
+
+	public String getRepeatForm() {
+		return repeatForm;
+	}
+
+	public void setRepeatForm(String repeatForm) {
+		this.repeatForm = repeatForm;
+	}
 
 	public Integer getTotalPages() {
 		return totalPages;
@@ -193,18 +203,29 @@ public class UserAdmin extends BaseAction {
 		List<Group> groups = userService.getGroupList();
 		request.setAttribute("roles", roles);
 		request.setAttribute("groups", groups);
+		session.setAttribute("repeatForm", Math.random() + ""); // 防止表单重复提交
 		return SUCCESS;
 	}
 
 	// 增加用户
-	@Action(value = "addUser", results = { @Result(name = "success", type = "redirectAction", location = "userList.action") })
+	@Action(value = "addUser", results = { 
+			@Result(name = "success", type = "redirectAction", location = "userList.action"),
+			@Result(name = "invalid", type = "redirectAction", location = "addUserView.action") 
+	})
 	public String addUser() throws Exception {
 		// 校验,userName应该可以重复，因为有Key [两个汪洋]
 
-		// 保存
-		userService.addOrUpdateUser(null, userName, password, email, roleIds,
-				groupLeader, groupId, nickName, subPhone);
-		return SUCCESS;
+		String hiddenValue = (String) session.getAttribute("repeatForm");
+        if (repeatForm != null && repeatForm.equals(hiddenValue)) {            // 如果是等同的则清空后保存
+            session.removeAttribute("repeatForm");
+            // 保存数据
+            userService.addOrUpdateUser(null, userName, password, email, roleIds,
+    				groupLeader, groupId, nickName, subPhone);
+            
+            return SUCCESS;
+        } else {
+            return "invalid";
+        }
 	}
 
 	// 编辑用户页面
@@ -250,7 +271,7 @@ public class UserAdmin extends BaseAction {
 	// 设置用户权限
 	@Action(value = "assignPrivilegeToUser", results = { @Result(name = "success", type = "redirectAction", location = "userList.action") })
 	public String assignPrivilegeToUser() throws Exception {
-		userService.configRolePrivilege(userId, privilegeIds);
+		userService.configUserPrivilege(userId, privilegeIds);
 		return SUCCESS;
 	}
 

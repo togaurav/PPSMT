@@ -17,6 +17,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "privilege")
+//@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Privilege implements Serializable{
 
 	private static final long serialVersionUID = 1L;

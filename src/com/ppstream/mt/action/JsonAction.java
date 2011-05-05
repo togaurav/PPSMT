@@ -2,13 +2,13 @@ package com.ppstream.mt.action;
 
 import javax.annotation.Resource;
 
-import net.sf.json.JSONObject;
-
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Result;
+import org.springframework.stereotype.Controller;
 
 import com.ppstream.mt.service.AuthorityService;
 
+@Controller("jsonAction")
 public class JsonAction extends BaseAction{
 	
 	private static final long serialVersionUID = 1L;
