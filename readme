@@ -1,10 +1,7 @@
 struts2.2.1 & spring 3.0.5 & hibernate 3.6
 
-com.ppstream.mt.aop 下LogAop实现权限以及异常的拦截
-
-com.ppstream.mt.utils 下 Log4jInitServlet 中设置了webroot变量
-
-在com.ppstream.mt.exception 下定义业务异常
+struts2.2.1 只用到了action一项，validate和intercept都没有用。
+考虑取消，改用Spring MVC
 
 Ehcache  缓存策略： 在service方法中手动处理
 (ehcache中的Terracotta :分布式缓存技术，未使用)
