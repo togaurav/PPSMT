@@ -17,5 +17,7 @@ Spring Controller 使用request,session，封装BaseController
 Json
 页面标签 JSTL
 
-
 url rewrite
+
+添加或修改资源分类时，清空缓存
+20分钟，使sessino失效
