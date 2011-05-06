@@ -17,7 +17,7 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
  *
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:applicationContext.xml" })
+@ContextConfiguration(locations = {"classpath:applicationContext.xml" })
 //@TestExecutionListeners({DependencyInjectionTestExecutionListener.class })
 @TransactionConfiguration(transactionManager = "txManager", defaultRollback = false)
 public class BaseTest extends AbstractTransactionalJUnit4SpringContextTests {

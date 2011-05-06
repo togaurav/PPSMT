@@ -9,6 +9,7 @@ import java.util.Set;
 import javax.annotation.Resource;
 
 import org.apache.commons.lang.xwork.StringUtils;
+import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Result;
 import org.springframework.stereotype.Controller;
@@ -59,6 +60,13 @@ public class Account extends BaseAction implements ModelDriven<UserLogIn> {
 	// 用户登录
 	@Action(value = "login", results = { @Result(name = "success", location = "/user/index.jsp") })
 	public String login() throws Exception {
+		String method = ServletActionContext.getRequest().getMethod();
+		boolean isPostMethod = "GET".equalsIgnoreCase(method);
+		if (isPostMethod) {   // 不能是非POST提交
+			ActionContext ac = ActionContext.getContext();
+        	ac.put("loginTips", "请重新登录！");    
+			return LOGIN;
+		}
 		// 验证
 		if (StringUtils.isEmpty(userLogIn.getUsername())) {
 			errorMap.put("username", "Please enter a username");
@@ -114,9 +122,9 @@ public class Account extends BaseAction implements ModelDriven<UserLogIn> {
 	}
 
 	// 退出
-	@Action(value = "logout")
+	@Action(value = "logout", results = { @Result(name = "success", location = "/user/login.jsp") })
 	public String logout() throws Exception {
 		session.invalidate();
-		return LOGIN;
+		return SUCCESS;
 	}
 }

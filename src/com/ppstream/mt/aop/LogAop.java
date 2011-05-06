@@ -9,12 +9,13 @@ import java.util.Set;
 
 import javax.servlet.http.HttpSession;
 
-import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.opensymphony.xwork2.Action;
@@ -54,7 +55,8 @@ public class LogAop {
     @Around("inActionMethod()")
     public Object doAround(ProceedingJoinPoint pjp) throws Throwable
     {
-        Logger log = Logger.getLogger(pjp.getTarget().getClass());
+//        Logger log = Logger.getLogger(pjp.getTarget().getClass());
+        Logger log = LoggerFactory.getLogger(pjp.getTarget().getClass());
         // 动作的名称以及时间
         StringBuilder sb = new StringBuilder();
         sb.append("[")

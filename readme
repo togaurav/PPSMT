@@ -1,9 +1,21 @@
 struts2.2.1 & spring 3.0.5 & hibernate 3.6
+SLF4J + LogBack
 
-struts2.2.1 只用到了action一项，validate和intercept都没有用。
-考虑取消，改用Spring MVC
 
-Ehcache  缓存策略： 在service方法中手动处理
-(ehcache中的Terracotta :分布式缓存技术，未使用)
+编译打包  ant -buildfile ~/PPSMT/build.xml
 
-编译 ant -buildfile ~/PPSMT/build.xml
+Memcached
+http://code.google.com/p/hibernate-memcached/
+
+-----------------------
+Google Guava    ||   Apache Commons Lang
+BoneCP  http://jolbox.com/
+Ehcache
+
+--------------
+Spring Controller 使用request,session，封装BaseController
+Json
+页面标签 JSTL
+
+
+url rewrite

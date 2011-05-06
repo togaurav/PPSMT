@@ -1,12 +1,23 @@
 package com.ppstream.mt.dao;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import javax.annotation.Resource;
+
+import oracle.jdbc.OracleTypes;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -14,9 +25,14 @@ import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.ConnectionCallback;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.springframework.stereotype.Repository;
+
+import ch.qos.logback.classic.Level;
 
 import com.ppstream.mt.utils.pager.PgInfo;
 import com.ppstream.mt.utils.pager.SqlRow;
@@ -29,6 +45,9 @@ public class BaseDaoImpl extends HibernateDaoSupport implements BaseDao{
 	public void fillUpSessionFactory(SessionFactory sf) {
 		super.setSessionFactory(sf);
 	}
+	
+	@Resource
+    private JdbcTemplate jdbcTemplate;
 	
 	@Override
 	public void save(Object entity) {
@@ -294,5 +313,35 @@ public class BaseDaoImpl extends HibernateDaoSupport implements BaseDao{
 				});
 		return (TbData)result;
 	}
+	
+	
+	
+	
+	/**
+	 * 调用存储过程  【TEST】
+	 * @param procudure 存储过程,eg :  "{Call COMMON_PKG.GET_SAMPLE_DETAIL(?,?)}"
+	 * @param args 参数
+	 * @return  Map 集合
+	 * @throws SQLException
+	 */
+//	public Map callProcedure(final String procudure,final Object... args) throws SQLException {
+//        Map obj = (Map) jdbcTemplate.execute(new ConnectionCallback() {
+//
+//            public Map doInConnection(Connection conn) throws SQLException, DataAccessException {
+//                // 样本量Map
+//                Map result = new HashMap();
+//                CallableStatement cs = conn.prepareCall(procudure);
+//                cs.setInt(1, 10);
+//                cs.registerOutParameter(2, OracleTypes.CURSOR);
+//                cs.execute();
+//                ResultSet rs = (ResultSet) cs.getObject(2);
+//                while (rs.next()) {
+//                	result.put(rs.getString("DATE_ID"), rs.getString("USER_NUM"));
+//                }
+//                return result;
+//            }
+//        });
+//        return obj;
+//    }
 	
 }
