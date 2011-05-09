@@ -1,23 +1,35 @@
 struts2.2.1 & spring 3.0.5 & hibernate 3.6
 SLF4J + LogBack
+bonecp   http://jolbox.com/
 
+httpclient 已改名为 httpcomponents 
 
 编译打包  ant -buildfile ~/PPSMT/build.xml
-
-Memcached
-http://code.google.com/p/hibernate-memcached/
-
------------------------
+----------------------- 看源码
 Google Guava    ||   Apache Commons Lang
-BoneCP  http://jolbox.com/
+BoneCP  
 Ehcache
-
 --------------
 Spring Controller 使用request,session，封装BaseController
 Json
 页面标签 JSTL
+文件上传
 
 url rewrite
 
+-------------- 未做
 添加或修改资源分类时，清空缓存
-20分钟，使sessino失效
+20分钟，使session失效
+
+
+Memcached
+http://code.google.com/p/hibernate-memcached/
+session 的保存方式
+tomcat容器，memcached-session-manager
+
+
+
+待修改：更新左侧的树(超级管理员增加了权限，再给自己的角色赋予此权限的情况)
+		    (删除资源时也要更新左侧的树)
+
+jQuery EasyUI仅使用了一个layout，替换
