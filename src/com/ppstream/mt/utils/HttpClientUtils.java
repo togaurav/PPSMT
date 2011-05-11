@@ -1,8 +1,6 @@
 package com.ppstream.mt.utils;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.List;
 
 import javax.net.ssl.SSLHandshakeException;
@@ -30,7 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * httpclient-4.0.3
+ * httpclient-4.1.1
  * 
  * @author liupeng
  * 
@@ -98,15 +96,16 @@ public class HttpClientUtils {
 			response = httpclient.execute(httpost);
 			httpost.abort();
 			long time2 = System.currentTimeMillis();
-			System.out.println("post time = " + (time2 - time1)); // 性能
+			System.out.println("post time = " + (time2 - time1)); // 耗时
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			httpclient.getConnectionManager().shutdown();
 			try {
-				BufferedReader br = new BufferedReader(new InputStreamReader(
-						response.getEntity().getContent()));
-				result = br.readLine();
+				HttpEntity resEntity = response.getEntity();
+			    byte[] bytes;
+				bytes = EntityUtils.toByteArray(resEntity);
+			    result = new String(bytes, "UTF-8");
 			} catch (IllegalStateException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
