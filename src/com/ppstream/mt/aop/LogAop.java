@@ -22,8 +22,8 @@ import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionContext;
 import com.ppstream.mt.bean.GPrivilege;
 
-@Component("logAop")
-@Aspect 
+//@Component("logAop")
+//@Aspect 
 public class LogAop {
 	
 	/**

@@ -20,8 +20,7 @@ public class AuthorityServiceTest extends BaseTest {
 	}
 
 	@Test
-	public void testSaveUser(){
-		System.out.println(authorityService == null);
+	public void testGetPrivilegeTypeList(){
 		System.out.println(authorityService.getPrivilegeTypeList());
 	}
 

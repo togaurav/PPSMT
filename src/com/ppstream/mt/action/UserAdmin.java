@@ -1,5 +1,6 @@
 package com.ppstream.mt.action;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -17,8 +18,6 @@ import com.ppstream.mt.entity.Role;
 import com.ppstream.mt.entity.User;
 import com.ppstream.mt.service.AuthorityService;
 import com.ppstream.mt.service.UserService;
-import com.ppstream.mt.utils.pager.PgInfo;
-import com.ppstream.mt.utils.pager.TbData;
 
 @Controller("userAdmin")
 public class UserAdmin extends BaseAction {
@@ -173,12 +172,12 @@ public class UserAdmin extends BaseAction {
 		if(currentPage == null){
 		   currentPage = 1;
 		}
-	    TbData tbData = userService.getUserList(currentPage,pageSize);
-	    @SuppressWarnings("unchecked")
-	    List<User> users = tbData.getList();
-	    PgInfo pgInfo = tbData.getPageInfo();
-	    request.setAttribute("users", users);
-	    request.setAttribute("pginfo",pgInfo);
+//	    TbData tbData = userService.getUserList(currentPage,pageSize);
+//	    @SuppressWarnings("unchecked")
+//	    List<User> users = tbData.getList();
+//	    PgInfo pgInfo = tbData.getPageInfo();
+	    request.setAttribute("users", new ArrayList<User>());
+	    request.setAttribute("pginfo",null);
 	    return SUCCESS;
 	}
 

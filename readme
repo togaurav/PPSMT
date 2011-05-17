@@ -9,24 +9,19 @@ httpclient 已改名为 httpcomponents
 Google Guava    ||   Apache Commons Lang
 BoneCP  
 Ehcache
---------------
-Spring Controller 使用request,session，封装BaseController
-Json
-页面标签 JSTL
-文件上传
-
-url rewrite
-
--------------- 未做
+-------------------------------- 未做
 添加或修改资源分类时，清空缓存
 20分钟，使session失效
 
 
+logback 日志级别 
+EntityListener
+
+--------------------------
 Memcached
 http://code.google.com/p/hibernate-memcached/
 session 的保存方式
 tomcat容器，memcached-session-manager
-
 
 
 待修改：更新左侧的树(超级管理员增加了权限，再给自己的角色赋予此权限的情况)
