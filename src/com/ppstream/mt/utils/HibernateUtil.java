@@ -1,4 +1,4 @@
-package com.pps.util;
+package com.ppstream.mt.utils;
 
 import java.util.Iterator;
 
@@ -7,11 +7,9 @@ import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 
-import com.pps.bean.ZzUsers;
-
 
 /**
- * poÀàÃûĞëÓë¶ÔÓ¦Ó³ÉäÎÄ¼şÃûÒ»ÖÂ£¬¼´Student.javaÓëStudent.hbm.xml
+ * poç±»åé¡»ä¸å¯¹åº”æ˜ å°„æ–‡ä»¶åä¸€è‡´ï¼Œå³Student.javaä¸Student.hbm.xml
  */
 public class HibernateUtil {
 	
@@ -40,11 +38,11 @@ public class HibernateUtil {
 	}
 
 	/**
-	 * ¹¦ÄÜÃèÊö£º»ñÈ¡ÊµÌå¶ÔÓ¦µÄ±íÃû
+	 * åŠŸèƒ½æè¿°ï¼šè·å–å®ä½“å¯¹åº”çš„è¡¨å
 	 * 
 	 * @param clazz
-	 *            ÊµÌåÀà
-	 * @return ±íÃû
+	 *            å®ä½“ç±»
+	 * @return è¡¨å
 	 */
 	@SuppressWarnings("unchecked")
 	public static String getTableName(Class clazz) {
@@ -52,11 +50,11 @@ public class HibernateUtil {
 	}
 
 	/**
-	 * ¹¦ÄÜÃèÊö£º»ñÈ¡ÊµÌå¶ÔÓ¦±íµÄÖ÷¼ü×Ö¶ÎÃû³Æ
+	 * åŠŸèƒ½æè¿°ï¼šè·å–å®ä½“å¯¹åº”è¡¨çš„ä¸»é”®å­—æ®µåç§°
 	 * 
 	 * @param clazz
-	 *            ÊµÌåÀà
-	 * @return Ö÷¼ü×Ö¶ÎÃû³Æ
+	 *            å®ä½“ç±»
+	 * @return ä¸»é”®å­—æ®µåç§°
 	 */
 	@SuppressWarnings("unchecked")
 	public static String getPkColumnName(Class clazz) {
@@ -64,13 +62,13 @@ public class HibernateUtil {
 	}
 
 	/**
-	 * ¹¦ÄÜÃèÊö£ºÍ¨¹ıÊµÌåÀàºÍÊôĞÔ£¬»ñÈ¡ÊµÌåÀàÊôĞÔ¶ÔÓ¦µÄ±í×Ö¶ÎÃû³Æ
+	 * åŠŸèƒ½æè¿°ï¼šé€šè¿‡å®ä½“ç±»å’Œå±æ€§ï¼Œè·å–å®ä½“ç±»å±æ€§å¯¹åº”çš„è¡¨å­—æ®µåç§°
 	 * 
 	 * @param clazz
-	 *            ÊµÌåÀà
+	 *            å®ä½“ç±»
 	 * @param propertyName
-	 *            ÊôĞÔÃû³Æ
-	 * @return ×Ö¶ÎÃû³Æ
+	 *            å±æ€§åç§°
+	 * @return å­—æ®µåç§°
 	 */
 	@SuppressWarnings("unchecked")
 	public static String getColumnName(Class clazz, String propertyName) {
@@ -84,10 +82,4 @@ public class HibernateUtil {
 		return null;
 	}
 
-	/**
-	 * ²âÊÔ£¬»ñÈ¡±íÃû
-	 */
-	public static void main(String[] args) {
-		System.out.println(getTableName(ZzUsers.class));
-	}
 }
