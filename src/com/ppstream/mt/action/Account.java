@@ -20,7 +20,7 @@ import com.ppstream.mt.bean.GPrivilege;
 import com.ppstream.mt.entity.Privilege;
 import com.ppstream.mt.entity.Role;
 import com.ppstream.mt.entity.User;
-import com.ppstream.mt.formmodel.UserLogIn;
+import com.ppstream.mt.modeldriven.UserLogIn;
 import com.ppstream.mt.service.UserService;
 
 @Controller("account")

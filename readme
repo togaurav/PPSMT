@@ -4,6 +4,9 @@ bonecp   http://jolbox.com/
 
 httpclient 已改名为 httpcomponents 
 
+模板引擎  Velocity 1.7
+Spring security 3.1 rc2
+
 编译打包  ant -buildfile ~/PPSMT/build.xml
 ----------------------- 看源码
 Google Guava    ||   Apache Commons Lang
@@ -13,18 +16,10 @@ Ehcache
 添加或修改资源分类时，清空缓存
 20分钟，使session失效
 
-
 logback 日志级别 
 EntityListener
-
 --------------------------
 Memcached
 http://code.google.com/p/hibernate-memcached/
 session 的保存方式
 tomcat容器，memcached-session-manager
-
-
-待修改：更新左侧的树(超级管理员增加了权限，再给自己的角色赋予此权限的情况)
-		    (删除资源时也要更新左侧的树)
-
-jQuery EasyUI仅使用了一个layout，替换
