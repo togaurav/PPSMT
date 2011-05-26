@@ -23,6 +23,7 @@ function psort(sid,obj){	// 修改资源排序
 	   url: "${pageContext.request.contextPath}/default/editPrivilegeSortIndex.action",
 	   data: "sortIndex="+sortIndex+'&privilegeId='+sid,  // +'&rand='+ new Date().getTime()
 	   success: function(data, textStatus){
+		 alert(data);
 		 $('#p_img_'+sid).hide();
 		 obj.disabled = false;
 	   }
@@ -97,14 +98,16 @@ jQuery(function($){
 	<tr style="background-color: rgb(238, 238, 255);" class="privilege_cate data_rows red">
 		<td width="400"><s:property value="#cate.cateName" /></td>
 		<td>
-			<input value="展开" type="button" onclick="showItem(<s:property value="#cate.id" />,this)"> 
+			<input value="展开" type="button" 
+				onclick="showItem(<s:property value="#cate.id" />,this)"> 
 			<input value="修改" onclick="location.href='${pageContext.request.contextPath}/default/editPrivilegeCateView.action?cateId=<s:property value="#cate.id" />'" type="button">&nbsp;
 			<input class="del_btn" value="删除"
 				 onclick="if(confirm('确认删除？'))location.href='${pageContext.request.contextPath}/default/deletePrivilegeCate.action?cateId=<s:property value="#cate.id" />'" 
 				 type="button">&nbsp;
 			<input value="添加资源" onclick="location.href='${pageContext.request.contextPath}/default/addPrivilegeView.action?cateId=<s:property value="#cate.id" />'" type="button">
 			<input style="width: 30px;" value="<s:property value="#cate.sortIndex" />" type="text"> 
-			<input value="修改排序"  onclick="pcsort(<s:property value="#cate.id" />,this)"  type="button">  
+			<input value="修改排序"  
+				onclick="pcsort(<s:property value="#cate.id" />,this)"  type="button">  
 			<span id="pc_img_361" style="display: none;"><img src="${pageContext.request.contextPath}/images/loading.gif"></span>
 		</td>
 	</tr>
@@ -120,7 +123,8 @@ jQuery(function($){
 					onclick="if(confirm('确认删除？'))location.href='${pageContext.request.contextPath}/default/deletePrivilege.action?privilegeId=<s:property value="#privilege.id" />'" 
 					type="button" />
 				<input style="width: 30px;" value="<s:property value="#privilege.sortIndex" />" type="text" /> 
-				<input value="修改排序" onclick="psort(<s:property value="#privilege.id" />,this)" type="button">
+				<input value="修改排序" 
+					onclick="psort(<s:property value="#privilege.id" />,this)" type="button">
 				<span id="p_img_1100" style="display: none;"><img src="${pageContext.request.contextPath}/images/loading.gif"></span>
 			</td>
 		</tr>

@@ -1,10 +1,8 @@
 struts2.2.1 & spring 3.0.5 & hibernate 3.6
 SLF4J + LogBack
 bonecp   http://jolbox.com/
-
-httpclient 已改名为 httpcomponents 
-
-模板引擎  Velocity 1.7
+待增加：
+Velocity 1.7
 Spring security 3.1 rc2
 
 编译打包  ant -buildfile ~/PPSMT/build.xml
@@ -14,12 +12,14 @@ BoneCP
 Ehcache
 -------------------------------- 未做
 添加或修改资源分类时，清空缓存
-20分钟，使session失效
 
 logback 日志级别 
 EntityListener
+
+重定向到一个action时，传递参数
+发送html的邮件，邮件模板
 --------------------------
 Memcached
 http://code.google.com/p/hibernate-memcached/
-session 的保存方式
+session 的保存,管理
 tomcat容器，memcached-session-manager

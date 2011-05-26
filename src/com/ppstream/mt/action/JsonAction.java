@@ -2,6 +2,8 @@ package com.ppstream.mt.action;
 
 import javax.annotation.Resource;
 
+import net.sf.json.JSONObject;
+
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Result;
 import org.springframework.stereotype.Controller;
@@ -77,9 +79,9 @@ public class JsonAction extends BaseAction{
 	)
 	public String editPrivilegeSortIndex() throws Exception{
 		authorityService.editPrivilegeSortIndex(privilegeId,sortIndex);
-//		JSONObject json = new JSONObject();
-//		json.put("success", true);
-//		setJsonData(json.toString());
+		JSONObject json = new JSONObject();
+		json.put("success", true);
+		setJsonData(json.toString());
 		return SUCCESS; 
 	}
 
