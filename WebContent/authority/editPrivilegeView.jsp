@@ -7,68 +7,67 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>修改资源</title>
 <link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath}/css/admin.css">
+	href="${pageContext.request.contextPath}/css/frameset.css">
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/javascript/jquery-1.6.1.min.js"></script>
 </head>
 <body>
 
 
-	<div id="body">
-		<h3>修改资源</h3>
-		<div id="main">
-			<form action="${pageContext.request.contextPath}/default/editPrivilege.action" method="post">
-				<input name="privilegeId" value="<s:property value="#request.privilege.id" />" type="hidden" />
-				<table>
-					<tbody>
-						<tr>
-							<td class="form_head">所属分类：</td>
-							<td class="form_field"><select name="cateId">
-<s:iterator value="#request.catelists" id="cate">
-									<option value="<s:property value="#request.cate.id" />" 
-									<s:if test="%{#request.privilege.privilegeCate.id == #cate.id}">
+	<h1 id="frame-header"></h1>
+	<h2 class="data-header">修改资源</h2>
+	<s:form action="editPrivilege" id="editPrivilege" validate="true"
+		method="post">
+		<table class="data-table table-header">
+			<tr>
+				<td>所属分类：</td>
+				<td><select name="cateId">
+						<s:iterator value="#request.catelists" id="cate">
+							<option value="<s:property value="#request.cate.id" />"
+								<s:if test="%{#request.privilege.privilegeCate.id == #cate.id}">
 									selected="selected"
-									</s:if>
-									>
-									<s:property value="#request.cate.cateName" /></option>
-</s:iterator>
-							</select>
-							</td>
-						</tr>
-						<tr>
-							<td class="form_head">资源名称：</td>
-							<td class="form_field"><input name="name" value="<s:property value="#request.privilege.name" />" type="text">
-							</td>
-						</tr>
+									</s:if>>
+								<s:property value="#request.cate.cateName" />
+							</option>
+						</s:iterator>
+				</select>
+				</td>
+			</tr>
+			<tr>
+				<td>资源名称：</td>
+				<td><input name="name"
+					value="<s:property value="#request.privilege.name" />" type="text">
+				</td>
+			</tr>
 
-						<tr>
-							<td class="form_head">资源路径：</td>
-							<td class="form_field"><input name="action" value="<s:property value="#request.privilege.action" />"
-								type="text">
-							</td>
-						</tr>
-						<tr>
-							<td class="form_head">是否显示在导航中：</td>
-							<td class="form_field"><input name="showNav" value="0"
-								class="radio" 
-								<s:if test="%{#request.privilege.showNav == 0}">
+			<tr>
+				<td>资源路径：</td>
+				<td><input name="action"
+					value="<s:property value="#request.privilege.action" />"
+					type="text">
+				</td>
+			</tr>
+			<tr>
+				<td>是否显示在导航中：</td>
+				<td><input name="showNav" value="0" class="radio"
+					<s:if test="%{#request.privilege.showNav == 0}">
 								checked="checked" 
 								</s:if>
-								type="radio">否&nbsp;<input
-								name="showNav" value="1" class="radio" 
-								<s:if test="%{#request.privilege.showNav == 1}">
+					type="radio">否&nbsp;<input name="showNav" value="1"
+					class="radio"
+					<s:if test="%{#request.privilege.showNav == 1}">
 								checked="checked" 
 								</s:if>
-								type="radio">是</td>
-						</tr>
-						<tr>
-							<td class="form_center" colspan="2"><input class=""
-								value="提交" type="submit">
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</form>
-		</div>
-	</div>
+					type="radio">是</td>
+			</tr>
+			<tr>
+				<td colspan="2"><input name="privilegeId"
+					value="<s:property value="#request.privilege.id" />" type="hidden" />
+					<input class="" value="提交" type="submit">
+				</td>
+			</tr>
+		</table>
+	</s:form>
 
 
 

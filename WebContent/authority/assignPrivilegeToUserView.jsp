@@ -5,9 +5,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>设置用户权限</title>
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath}/css/admin.css">
-<script type="text/javascript" src="http://code.jquery.com/jquery-1.4.4.min.js"></script>
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/frameset.css">
+<script type="text/javascript" src="${pageContext.request.contextPath}/javascript/jquery-1.6.1.min.js"></script>
 <script type="text/javascript">
 function selectRev(cate_id)
 {
@@ -28,52 +27,52 @@ function selectAll(cate_id)
 <body>
 
 
-<div id="main">
-<form action="${pageContext.request.contextPath}/default/assignPrivilegeToUser.action" method="post">
-<input name="userId" value="${userId}" type="hidden" />
-<table>
+<h1 id="frame-header"></h1>
+<h2 class="data-header">设置用户权限</h2>
+<s:form action="assignPrivilegeToUser" id="assignPrivilegeToUser" validate="true" method="post">
+<table class="data-table table-header">
 	<tr>
-		<td class="form_center">
+		<td>
 			<input value="全选" onclick="selectAll();" type="button">&nbsp;
 			<input class="" value="反选" onclick="selectRev();" type="button">&nbsp;
 			<input value="提交" type="submit">
 		</td>
 	</tr>
-<s:iterator value="#request.privilegeCates" id="cate">
-	<!-- 二级权限 -->
-	<tr style="background-color: rgb(238, 238, 255);" class="privilege_cate data_rows red">
-		<td><s:property value="#cate.cateName" />&nbsp;
-			<input value="全选" onclick="selectAll('<s:property value="#cate.id" />');" type="button">&nbsp;
-			<input value="反选" onclick="selectRev('<s:property value="#cate.id" />');" type="button">
-		</td>
-	</tr>
-<s:iterator value="#cate.privileges" id="privileges">
-	<!-- 权限,隔行换色     style="background-color: rgb(238, 238, 255);"    -->
-	<tr style="background-color: transparent;" class="privilege_item data_rows">
-		<td>
-			<label for="item_id_<s:property value="#privileges.id" />">
-				<input name="privilegeIds" value="<s:property value="#privileges.id" />"  
-				<s:if test="%{#request.privilegeIds.contains(#privileges.id)}">
-				checked
-				</s:if>
-					id="item_id_<s:property value="#privileges.id" />" 
-					class="privilege_cate_<s:property value="#cate.id" />" type="checkbox">
-				<s:property value="#privileges.name" />
-			</label>
-		</td>
-	</tr>
-</s:iterator>
-</s:iterator>
+	<s:iterator value="#request.privilegeCates" id="cate">
+		<!-- 二级权限 -->
+		<tr style="background-color: rgb(238, 238, 255);" class="privilege_cate data_rows red">
+			<td><s:property value="#cate.cateName" />&nbsp;
+				<input value="全选" onclick="selectAll('<s:property value="#cate.id" />');" type="button">&nbsp;
+				<input value="反选" onclick="selectRev('<s:property value="#cate.id" />');" type="button">
+			</td>
+		</tr>
+		<s:iterator value="#cate.privileges" id="privileges">
+			<!-- 权限,隔行换色     style="background-color: rgb(238, 238, 255);"    -->
+			<tr style="background-color: transparent;" class="privilege_item data_rows">
+				<td>
+					<label for="item_id_<s:property value="#privileges.id" />">
+						<input name="privilegeIds" value="<s:property value="#privileges.id" />"  
+						<s:if test="%{#request.privilegeIds.contains(#privileges.id)}">
+						checked
+						</s:if>
+							id="item_id_<s:property value="#privileges.id" />" 
+							class="privilege_cate_<s:property value="#cate.id" />" type="checkbox">
+						<s:property value="#privileges.name" />
+					</label>
+				</td>
+			</tr>
+		</s:iterator>
+	</s:iterator>
 	<tr>
-		<td class="form_center">
+		<td>
 			<input class="" value="全选" onclick="selectAll();" type="button">&nbsp;
 			<input class="" value="反选" onclick="selectRev();" type="button">&nbsp;
+			<input name="userId" value="${userId}" type="hidden" />
 			<input class="" value="提交" type="submit">
 		</td>
 	</tr>
 </table>
-</form>
-</div>
+</s:form>
 
 
 </body>

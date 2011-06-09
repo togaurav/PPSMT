@@ -4,11 +4,9 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<script type="text/javascript"
-	src="http://code.jquery.com/jquery-1.4.4.min.js"></script>
 <title>资源列表</title>
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath}/css/admin.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/frameset.css">
+<script type="text/javascript" src="${pageContext.request.contextPath}/javascript/jquery-1.6.1.min.js"></script>
 <script type="text/javascript">
 function showItem(i,obj){
 	$('tr.item_'+i).toggle();
@@ -86,13 +84,16 @@ jQuery(function($){
 </script>
 </head>
 <body>
-<div id="body">
-<h3>资源列表</h3>
-<div id="main">
+
+<h1 id="frame-header"></h1>
+<h2 class="data-header">资源列表</h2>
+<h2 class="data-header">
 <input value="添加大分类" onclick="location.href='${pageContext.request.contextPath}/authority/addPrivilegeType.jsp'" type="button">
 <input value="添加资源分类" onclick="location.href='${pageContext.request.contextPath}/default/addPrivilegeCateView.action'" type="button">&nbsp;
 <input value="添加资源" onclick="location.href='${pageContext.request.contextPath}/default/addPrivilegeView.action'" type="button">
-<table>
+</h2>
+
+<table class="data-table table-header">
 
 <s:iterator value="#request.privilegeCates" id="cate">
 	<tr style="background-color: rgb(238, 238, 255);" class="privilege_cate data_rows red">
@@ -133,8 +134,6 @@ jQuery(function($){
 </s:iterator>
 
 </table>
-</div>
-</div>
 
 </body>
 </html>

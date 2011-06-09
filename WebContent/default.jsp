@@ -4,8 +4,8 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath}/css/admin.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/frameset.css">
+<script type="text/javascript" src="${pageContext.request.contextPath}/javascript/jquery-1.6.1.min.js"></script>
 <title>欢迎使用PPS运维监控系统！ </title>
 </head>
 <body>

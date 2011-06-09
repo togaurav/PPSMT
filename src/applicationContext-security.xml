@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+    xmlns:beans="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+            
+<debug/>                            
+
+<http auto-config="true" use-expressions="true" entry-point-ref="authenticationProcessingFilterEntryPoint">
+ 	<intercept-url pattern="/images/**" filters="none" />  
+    <intercept-url pattern="/css/**" filters="none" />  
+    <intercept-url pattern="/javascripts/**" filters="none" />  
+    <intercept-url pattern="/user/login.jsp" filters="none" />  
+    <!-- 
+    IS_AUTHENTICATED_ANONYMOUSLY   表示可以被任何人访问
+    IS_AUTHENTICATED_REMEMBERED   需要用户曾经在登录时点击了“记住我”（译者注：即cookie认证）或者是一个明确的登录身份（译者注：即 session 认证）。
+    IS_AUTHENTICATED_FULLY   需要用户明确的登录身份（译者注：即 session 认证）。
+     -->    
+    <intercept-url pattern="/default/login.action" access="IS_AUTHENTICATED_ANONYMOUSLY" />  
+    
+     <session-management invalid-session-url="/timeout.jsp">
+         <concurrency-control max-sessions="20" error-if-maximum-exceeded="true" />
+     </session-management>
+	
+	<!-- Http表单验证,自定义的login页面 -->
+	<form-login login-page="/user/login.jsp" authentication-failure-url="/error.jsp" 
+		always-use-default-target="true"
+		default-target-url="/default/login.action" 
+		login-processing-url="/default/login.action"  />
+		
+	<logout logout-success-url="/user/login.jsp"/>  
+    <remember-me />  
+    <access-denied-handler error-page="/error.jsp"/>           
+</http>
+
+	
+
+
+
+</beans:beans>

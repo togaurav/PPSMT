@@ -83,18 +83,23 @@ public class TagSoupUtils {
 
 	// 测试
 	private static void parseLaShouApi() {
-		String content = getTagSoupContentByUrl("http://localhost:8080/PPSMT/ReadXML.do", "UTF-8");
+//		String content = getTagSoupContentByUrl("http://localhost:8080/PPSMT/ReadXML.do", "UTF-8");
+		String content = getTagSoupContentByUrl("http://10.1.14.49:8080/ppsims20110513/Oa!outxml", "UTF-8");
 		try {
 			XmlGen x = new XmlGen(content.getBytes("UTF-8"));
-			List<XmlGen> sites = x.selectAllXml("//urlset/url");
+			List<XmlGen> sites = x.selectAllXml("//response/dataProvider/data");
 			for (XmlGen xg : sites) {
-				String loc = xg.selectFirst("loc/text()");
-				System.out.println(loc);
+				String userId = xg.selectFirst("groupName/text()");
+				System.out.println(userId);
 			}
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public static void main(String args[]){
+		parseLaShouApi();
 	}
 	
 }

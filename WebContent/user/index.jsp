@@ -11,10 +11,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <base href="<%=basePath%>">  
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-<script type="text/javascript"
-	src="http://code.jquery.com/jquery-1.4.4.min.js"></script>
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath}/css/admin.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/frameset.css">
+<script type="text/javascript" src="${pageContext.request.contextPath}/javascript/jquery-1.6.1.min.js"></script>
 <script type="text/javascript"
 	src="http://jquery.bassistance.de/treeview/jquery.treeview.js"></script>
 <link rel="stylesheet"
@@ -42,6 +40,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <body  class="easyui-layout">
 
 		<div region="north" border="false" style="height: 80px;">
+			<!-- 
 			<div id="admin-header">
 				<div id="admin-header-logo"><img src="${pageContext.request.contextPath}/images/logo.png"/></div>
 				<div id="admin-header-menu">
@@ -53,6 +52,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						onclick="window.frames['main-iframe'].location.href += (window.frames['main-iframe'].location.href.indexOf('?') == -1 ? '?' : '&').concat(Math.random());">刷新内页</a> 
 					<a href="" target="main-iframe" >返回登录首页</a></div>
 				</div>
+			</div>
+			 -->
+			<img id="logo" src="${pageContext.request.contextPath}/images/logo.png" />
+			<div id="user-pannel">
+				<p class="login-user">
+					登录员工：
+					<s:property value="#session.userName" default="匿名"/>
+				</p>
+				<p class="exit">
+					<a href="${pageContext.request.contextPath}/default/logout.action" target="_parent">[ 退出 ]</a>
+				</p>
 			</div>
 		</div>
 		<div region="west" split="true" title="导航菜单"

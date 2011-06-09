@@ -11,10 +11,9 @@
 <meta http-equiv="cache-control" content="no-cache">
 <meta http-equiv="expires" content="0">
 <link rel="shortcut icon" href="" />
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath}/css/admin.css">
-<script type="text/javascript" src="http://code.jquery.com/jquery-1.4.4.min.js"></script>
-<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.8/jquery.validate.min.js"></script>
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/frameset.css">
+<script type="text/javascript" src="${pageContext.request.contextPath}/javascript/jquery-1.6.1.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/javascript/jquery.validate.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
 
@@ -43,32 +42,17 @@ $(document).ready(function(){
 <body>
 <s:property value="#request.loginTips"/> 
 <form action="${pageContext.request.contextPath}/default/login.action" method="post" id="UserLogIn">
-<!-- 
-<table border="1" width="500px">
-	<tr>
-		<td>用户名</td>
-		<td><input type="text" name="username" /></td>
-	</tr>
-	<tr>
-		<td>密码</td>
-		<td><input type="password" name="password" /></td>
-	</tr>
-	<tr>
-		<td colspan="2">
-		<input type="submit" class="submit" value="登录" /></td>
-	</tr>
-</table>
- -->
+
 <div style="font-size: 20px; line-height: 50px; font-family: 黑体;">PPS运维监控系统</div>
 <table id="login_form">
 	<tr>
 		<td class="form_head">用户名：</td>
-		<td class="form_field"><input name="username" size="10" type="text"></td>
+		<td class="form_field"><input name="username" size="10" type="text" value="刘鹏"></td>
 	</tr>
 	<tr>
 		<td class="form_head">密&nbsp;&nbsp;码：</td>
 
-		<td class="form_field"><input name="password" size="10" type="password"></td>
+		<td class="form_field"><input name="password" size="10" type="password" value="123456"></td>
 	</tr>
 	<tr>
 		<td class="form_center" colspan="2"><input value="进入" name="Submit" type="submit"></td>

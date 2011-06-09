@@ -2,10 +2,14 @@ struts2.2.1 & spring 3.0.5 & hibernate 3.6
 SLF4J + LogBack
 bonecp   http://jolbox.com/
 待增加：
-Velocity 1.7
+freemarker 2.3.18
 Spring security 3.1 rc2
+MiddleGen (hibernate tool)
 
 编译打包  ant -buildfile ~/PPSMT/build.xml
+
+js规范： jquery 1.6.1,jquery-ui-1.8.13
+规范:配置文件按模块分，新添加action以及service按模块命名，统一调用baseDao    
 ----------------------- 看源码
 Google Guava    ||   Apache Commons Lang
 BoneCP  
@@ -18,6 +22,10 @@ EntityListener
 
 重定向到一个action时，传递参数
 发送html的邮件，邮件模板
+增加测试夹具 （test fixtures）
+多数据源配置，增加jdbcTemplate，多数据源的事务性
+压缩js，js名称后追加时间戳的方法
+action级别，注解事务控制
 --------------------------
 Memcached
 http://code.google.com/p/hibernate-memcached/

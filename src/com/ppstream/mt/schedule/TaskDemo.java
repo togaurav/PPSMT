@@ -11,15 +11,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class TaskDemo {
 	
-	@Scheduled(fixedDelay = 5000)
-	void doSomethingWithDelay() {
-		System.out.println("I'm doing with delay now!");
-	}
+//	@Scheduled(fixedDelay = 5000)
+//	void doSomethingWithDelay() {
+//		System.out.println("I'm doing with delay now!");
+//	}
 
-	@Scheduled(fixedRate = 5000)
-	void doSomethingWithRate() {
-		System.out.println("I'm doing with rate now!");
-	}
+//	@Scheduled(fixedRate = 5000)
+//	void doSomethingWithRate() {
+//		System.out.println("I'm doing with rate now!");
+//	}
 
 	@Scheduled(cron = "0 13 11 * * ?")
 	void doSomethingWith() {
